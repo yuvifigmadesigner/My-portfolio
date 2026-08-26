@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yuvraj Gupta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['PP Editorial New', 'PP Mori', 'serif'],
+              stardos: ['Stardos Stencil', 'serif'],
+              ppmori: ['PP Mori', 'sans-serif'],
+              editorial: ['PP Editorial New', 'serif'],
+              body: ['PP Editorial New', 'serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              'glass-border': 'rgba(255, 255, 255, 0.1)',
+            },
+            animation: {
+              'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
+              'star-movement-top': 'star-movement-top linear infinite alternate',
+              'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+            },
+            keyframes: {
+              'star-movement-bottom': {
+                '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+                '100%': { transform: 'translate(-100%, 0%)', opacity: '0' },
+              },
+              'star-movement-top': {
+                '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+                '100%': { transform: 'translate(100%, 0%)', opacity: '0' },
+              },
+              'border-beam': {
+                '100%': { 'offset-distance': '100%' },
+              },
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      @font-face {
+        font-family: 'PP Editorial New';
+        src: url('/new/PPEditorialNew-Regular-BF644b214ff145f.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'PP Editorial New';
+        src: url('/new/PPEditorialNew-Ultralight-BF644b21500d0c0.woff2') format('woff2');
+        font-weight: 200;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'PP Editorial New';
+        src: url('/new/PPEditorialNew-Ultrabold-BF644b21500840c.woff2') format('woff2');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'PP Mori';
+        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'PP Mori';
+        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'PP Mori';
+        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-Extrabold.woff2') format('woff2');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+      /* Custom Noise Utility */
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+      }
+      
+      /* Page Transitions */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Card Staggered Entrance */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Gentle Pulse Animation for Buttons */
+      @keyframes pulseGlow {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,255,255,0); }
+        50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+      }
+      .group:hover .group-hover-pulse {
+        animation: pulseGlow 2s infinite ease-in-out;
+      }
+
+      /* Custom Micro-Animations for Hero Cards (Active All the Time) */
+      @keyframes gentleWiggle {
+        0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+        75% { transform: rotate(-10deg) scale(1.08); }
+        85% { transform: rotate(10deg) scale(1.08); }
+        95% { transform: rotate(-5deg) scale(1.02); }
+      }
+      .animate-wiggle-always {
+        animation: gentleWiggle 4s ease-in-out infinite;
+      }
+
+      @keyframes bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+      }
+      .animate-bob-always {
+        animation: bob 2s ease-in-out infinite;
+      }
+      
+      /* Hide scrollbar globally */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      html, body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Dreamy orbiting light for "You?" avatar */
+      @keyframes dreamyOrbit {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes dreamyPulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.1",
+    "ogl": "https://esm.sh/ogl@1.0.11",
+    "framer-motion": "https://esm.sh/framer-motion@11.15.0?external=react,react-dom"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-[#120F17] text-white">
+    <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+</html>
