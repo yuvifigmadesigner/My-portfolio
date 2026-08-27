@@ -9,15 +9,17 @@ import Timeline from './components/Timeline';
 const About = React.lazy(() => import('./pages/About'));
 const Work = React.lazy(() => import('./pages/Work'));
 const CollegeAccessProgram = React.lazy(() => import('./pages/CollegeAccessProgram'));
+const SupplierQueryManagement = React.lazy(() => import('./pages/SupplierQueryManagement'));
 const ClickSpark = React.lazy(() => import('./components/ClickSpark'));
 import { Reveal } from './components/Reveal';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact' | 'cap'>(() => {
+  const [currentPage, setCurrentPage] = useState<'home' | 'contact' | 'cap' | 'sqm'>(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.toLowerCase();
       if (hash === '#contact' || hash === '#about') return 'contact';
       if (hash === '#cap' || hash === '#college-access-program') return 'cap';
+      if (hash === '#sqm' || hash === '#supplier-query-management') return 'sqm';
     }
     return 'home';
   });
@@ -36,6 +38,8 @@ const App: React.FC = () => {
         setCurrentPage('contact');
       } else if (hash === '#cap' || hash === '#college-access-program') {
         setCurrentPage('cap');
+      } else if (hash === '#sqm' || hash === '#supplier-query-management') {
+        setCurrentPage('sqm');
       } else {
         setCurrentPage('home');
       }
@@ -51,13 +55,16 @@ const App: React.FC = () => {
   }, []);
 
   const handleNavigate = (page: string) => {
-    let targetPage: 'home' | 'contact' | 'cap' = 'home';
+    let targetPage: 'home' | 'contact' | 'cap' | 'sqm' = 'home';
     if (page === 'about' || page === 'contact') {
       targetPage = 'contact';
       window.history.pushState(null, '', '#contact');
     } else if (page === 'cap' || page === 'college-access-program') {
       targetPage = 'cap';
       window.history.pushState(null, '', '#cap');
+    } else if (page === 'sqm' || page === 'supplier-query-management') {
+      targetPage = 'sqm';
+      window.history.pushState(null, '', '#sqm');
     } else {
       targetPage = 'home';
       window.history.pushState(null, '', window.location.pathname + window.location.search);
@@ -98,11 +105,19 @@ const App: React.FC = () => {
               </Suspense>
             </section>
           </div>
-        ) : (
+        ) : currentPage === 'cap' ? (
           <div className="flex flex-col w-full min-h-screen">
             <section id="cap" className="min-h-screen">
               <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
                 <CollegeAccessProgram onNavigate={handleNavigate} />
+              </Suspense>
+            </section>
+          </div>
+        ) : (
+          <div className="flex flex-col w-full min-h-screen">
+            <section id="sqm" className="min-h-screen">
+              <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
+                <SupplierQueryManagement onNavigate={handleNavigate} />
               </Suspense>
             </section>
           </div>

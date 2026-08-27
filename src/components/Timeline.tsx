@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 const timelineData = [
   {
@@ -36,6 +36,19 @@ const timelineData = [
 const viewportConfig = { once: true, margin: '0px 0px -20% 0px', amount: 0.1 };
 
 const Timeline: React.FC = () => {
+  // The mobile timeline's spine is drawn by scroll position rather than a
+  // one-shot reveal, so it fills in as you move down the entries.
+  const mobileRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: mobileRef,
+    offset: ['start 0.85', 'end 0.7'],
+  });
+  const spineScale = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.4,
+  });
+
   return (
     <section className="relative w-full min-h-[750px] bg-[#F8F6F0] flex items-center justify-center select-none overflow-hidden py-12 md:py-0">
       {/* DESKTOP PATTERNS (Bottom Left & Bottom Right) */}
@@ -267,10 +280,17 @@ const Timeline: React.FC = () => {
       </div>
 
       {/* MOBILE VIEW (< md breakpoint, vertical timeline with left/right alternating elements) */}
-      <div className="block md:hidden relative w-full px-3 pt-6 pb-16">
+      <div ref={mobileRef} className="block md:hidden relative w-full px-3 pt-6 pb-16">
         <div className="relative w-full flex flex-col items-center">
-          {/* Section Header Badge: EXPERIENCE (Mobile View Only, styled same as SELECTED WORKS) */}
-          <div className="relative inline-block select-none mb-24 z-20">
+          {/* Section Header Badge: EXPERIENCE (Mobile View Only, styled same as SELECTED WORKS)
+              Revealed on scroll, matching the rest of the mobile timeline. */}
+          <motion.div
+            className="relative inline-block select-none mb-24 z-20"
+            initial={{ opacity: 0, y: -16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewportConfig}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="absolute -top-3.5 left-0 bottom-0 w-[2px] bg-[#F05C6D] z-10">
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#F05C6D] shadow-sm" />
             </div>
@@ -280,7 +300,7 @@ const Timeline: React.FC = () => {
             <div className="absolute top-0 right-0 -bottom-3.5 w-[2px] bg-[#F05C6D] z-10">
               <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#F05C6D] shadow-sm" />
             </div>
-          </div>
+          </motion.div>
 
           {/* Main vertical line running top to bottom */}
           <motion.div
@@ -288,11 +308,8 @@ const Timeline: React.FC = () => {
             style={{
               background: 'linear-gradient(to bottom, #F05C6D 0%, #F05C6D 85%, transparent 100%)',
               originY: 0,
+              scaleY: spineScale,
             }}
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={viewportConfig}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
 
           {/* Start circle (top end) */}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { requestFolderReturn, scrollToWorkFolder } from '../../utils/exitPoint';
+import CaseStudyNav, { NavSection } from '../../components/CaseStudyNav';
 
 interface CapPageProps {
   onNavigate?: (page: string) => void;
@@ -15,6 +17,16 @@ const capAssets = [
   '/for CAP page/6_4x.webp',
   '/for CAP page/7_4x.webp',
   '/for CAP page/8_4x.webp',
+];
+
+/* Section rail. Labels are shortened; the headings themselves run long. */
+const navSections: NavSection[] = [
+  { id: 'cap-01', label: 'Goal & Limits', theme: 'light' },
+  { id: 'cap-02', label: 'What I Learned', theme: 'light' },
+  { id: 'cap-03', label: 'Key Components', theme: 'dark' },
+  { id: 'cap-04', label: 'Why It Works', theme: 'light' },
+  { id: 'cap-05', label: 'What Changed', theme: 'light' },
+  { id: 'cap-06', label: 'What Next', theme: 'light' },
 ];
 
 const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
@@ -41,25 +53,31 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
   }, []);
 
   const handleBackToHome = () => {
+    // When there is a folder card to restore, Work handles the scroll itself
+    // after reopening the modal.
+    const willRestoreFolder = requestFolderReturn();
+
     if (onNavigate) {
       onNavigate('home');
-      setTimeout(() => {
-        const workSection = document.getElementById('work');
-        if (workSection) {
-          workSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
     } else {
       window.location.hash = '#work';
     }
+
+    if (!willRestoreFolder) scrollToWorkFolder();
   };
 
   const handleNextProject = () => {
-    // Currently no redirect anywhere; destination will be defined later
+    if (onNavigate) {
+      onNavigate('sqm');
+    } else {
+      window.location.hash = '#sqm';
+    }
   };
 
   return (
     <div className="w-full flex flex-col items-center bg-[#120F17] text-white selection:bg-[#F05C6D]/30 min-h-screen">
+      <CaseStudyNav sections={navSections} />
+
       {/* ---------------------------------------------------- */}
       {/* HERO SECTION (Dark Background #120F17)                */}
       {/* ---------------------------------------------------- */}
@@ -113,7 +131,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 01 / GOAL, PROBLEMS AND LIMITS (Warm Paper Cream)     */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
+      <section id="cap-01" className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
         <div className="max-w-4xl mx-auto flex flex-col">
           {/* Section Number & Title (PP Mori) */}
           <span className="text-[#F05C6D] font-ppmori text-xs font-semibold tracking-[0.2em] uppercase mb-10">
@@ -158,7 +176,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 02 / WHAT I LEARNED (Warm Paper Cream)                */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] pb-20 sm:pb-28 px-6 sm:px-10 lg:px-16 border-t border-black/5">
+      <section id="cap-02" className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] pb-20 sm:pb-28 px-6 sm:px-10 lg:px-16 border-t border-black/5">
         <div className="max-w-4xl mx-auto flex flex-col pt-12">
           {/* Section Number & Title (PP Mori) */}
           <span className="text-[#F05C6D] font-ppmori text-xs font-semibold tracking-[0.2em] uppercase mb-10">
@@ -395,7 +413,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 03 / THE SCREENS (Dark #120F17)                       */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#120F17] py-20 sm:py-28 px-6 sm:px-10 lg:px-16 border-t border-white/10">
+      <section id="cap-03" className="w-full bg-[#120F17] py-20 sm:py-28 px-6 sm:px-10 lg:px-16 border-t border-white/10">
         <div className="max-w-4xl mx-auto flex flex-col gap-24">
           {/* Section Number & Title (PP Mori) */}
           <div className="flex flex-col items-start">
@@ -550,7 +568,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 04 / WHAT IT NEEDS TO ACTUALLY WORK (Paper Cream)     */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
+      <section id="cap-04" className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
         <div className="max-w-4xl mx-auto flex flex-col">
           {/* Section Number & Title (PP Mori) */}
           <span className="text-[#F05C6D] font-ppmori text-xs font-semibold tracking-[0.2em] uppercase mb-8">
@@ -559,24 +577,28 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
 
           {/* Table Container with Soft Paper & Ink Tones */}
           <div className="w-full rounded-[8px] border border-black/[0.08] bg-white overflow-hidden shadow-sm">
-            <div className="w-full bg-[#FCE6EC] px-6 sm:px-8 py-3.5 flex items-center border-b border-black/[0.06]">
-              <span className="w-1/3 sm:w-[32%] text-[#2D2936] font-ppmori text-xs uppercase tracking-widest font-semibold">
+            <div className="w-full bg-[#FCE6EC] px-6 sm:px-8 py-2.5 sm:py-3.5 flex items-center border-b border-black/[0.06]">
+              {/* Rows stack on mobile, so a single label is the only one that lines up */}
+              <span className="sm:hidden text-[#2D2936] font-ppmori text-[11px] uppercase tracking-widest font-semibold">
                 FRAMEWORK
               </span>
-              <span className="w-2/3 sm:w-[68%] text-[#2D2936] font-ppmori text-xs uppercase tracking-widest font-semibold">
-                WHERE IT SHOWED UP
+              <span className="hidden sm:block sm:w-[32%] text-[#2D2936] font-ppmori text-xs uppercase tracking-widest font-semibold">
+                FRAMEWORK
+              </span>
+              <span className="hidden sm:block sm:w-[68%] text-[#2D2936] font-ppmori text-xs uppercase tracking-widest font-semibold">
+                HOW I APPLIED IT
               </span>
             </div>
 
             <div className="divide-y divide-black/[0.06]">
-              {/* Row 1: Jakob's Law */}
+              {/* Row 1 */}
               <div className="px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-start gap-2 sm:gap-0 hover:bg-[#FAF7F2]/60 transition-colors">
                 <div className="w-full sm:w-[32%] pr-4">
                   <span className="font-ppmori text-xs text-[#6B6577] italic block mb-1">
                     (familiarity)
                   </span>
-                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28]">
-                    Jakob's Law
+                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28] leading-snug">
+                    People expect what they already know
                   </h4>
                 </div>
                 <div className="w-full sm:w-[68%]">
@@ -586,14 +608,14 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Row 2: Hick's Law */}
+              {/* Row 2 */}
               <div className="px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-start gap-2 sm:gap-0 hover:bg-[#FAF7F2]/60 transition-colors">
                 <div className="w-full sm:w-[32%] pr-4">
                   <span className="font-ppmori text-xs text-[#6B6577] italic block mb-1">
-                    (easy navigation)
+                    (decision speed)
                   </span>
-                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28]">
-                    Hick's Law
+                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28] leading-snug">
+                    More options mean slower decisions
                   </h4>
                 </div>
                 <div className="w-full sm:w-[68%]">
@@ -603,14 +625,14 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Row 3: Von Restorff Effect */}
+              {/* Row 3 */}
               <div className="px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-start gap-2 sm:gap-0 hover:bg-[#FAF7F2]/60 transition-colors">
                 <div className="w-full sm:w-[32%] pr-4">
                   <span className="font-ppmori text-xs text-[#6B6577] italic block mb-1">
                     (discoverability)
                   </span>
-                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28]">
-                    Von Restorff Effect
+                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28] leading-snug">
+                    What looks different gets noticed
                   </h4>
                 </div>
                 <div className="w-full sm:w-[68%]">
@@ -620,14 +642,14 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Row 4: Recency Bias */}
+              {/* Row 4 */}
               <div className="px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-start gap-2 sm:gap-0 hover:bg-[#FAF7F2]/60 transition-colors">
                 <div className="w-full sm:w-[32%] pr-4">
                   <span className="font-ppmori text-xs text-[#6B6577] italic block mb-1">
-                    (first come, first seen)
+                    (recency)
                   </span>
-                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28]">
-                    Recency Bias
+                  <h4 className="font-editorial text-lg sm:text-xl font-normal text-[#221F28] leading-snug">
+                    The newest item carries the most weight
                   </h4>
                 </div>
                 <div className="w-full sm:w-[68%]">
@@ -644,7 +666,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 05 / WHAT CHANGED AND WHAT I LEARNED (Paper Cream)    */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
+      <section id="cap-05" className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
         <div className="max-w-4xl mx-auto flex flex-col">
           {/* Section Number & Title (PP Mori) */}
           <span className="text-[#F05C6D] font-ppmori text-xs font-semibold tracking-[0.2em] uppercase mb-8">
@@ -671,7 +693,7 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
       {/* ---------------------------------------------------- */}
       {/* 06 / WHAT I WOULD DO NEXT (Paper Cream)               */}
       {/* ---------------------------------------------------- */}
-      <section className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] pb-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
+      <section id="cap-06" className="w-full bg-[#FAF7F2] light-bg-section text-[#221F28] pb-24 px-6 sm:px-10 lg:px-16 border-t border-black/5">
         <div className="max-w-4xl mx-auto flex flex-col pt-12">
           {/* Section Number & Title (PP Mori) */}
           <span className="text-[#F05C6D] font-ppmori text-xs font-semibold tracking-[0.2em] uppercase mb-8">
@@ -703,7 +725,9 @@ const CollegeAccessProgram: React.FC<CapPageProps> = ({ onNavigate }) => {
               onClick={handleNextProject}
               className="px-6 py-2.5 rounded-[4px] bg-[#FCE6EC] text-[#E04556] font-ppmori text-xs uppercase tracking-wider font-semibold hover:bg-[#fbd3dc] transition-colors cursor-pointer shadow-sm flex items-center gap-1.5"
             >
-              <span>NEXT PROJECT</span>
+              {/* Abbreviated on mobile so the button stays on one line */}
+              <span className="sm:hidden">SQM</span>
+              <span className="hidden sm:inline">SUPPLIER QUERY MANAGEMENT</span>
               <span>→</span>
             </button>
           </div>

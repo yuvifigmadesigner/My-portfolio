@@ -264,7 +264,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`group flex items-center justify-center px-5 py-2.5 rounded-full backdrop-blur-xl border cursor-pointer select-none transition-all duration-500 ${
                 isLightSection
-                  ? 'bg-[#120F17] border-[#F05C6D]/40 shadow-[0_8px_32px_rgba(240,92,109,0.25)]'
+                  ? 'bg-[#120F17] border-[#F05C6D]/40 shadow-[0_2px_6px_rgba(34,31,40,0.04),0_8px_24px_rgba(34,31,40,0.07)]'
                   : scrolled
                     ? 'bg-[#120F17]/90 border-[#F05C6D]/20 shadow-[0_8px_32px_rgba(240,92,109,0.08)]'
                     : 'bg-[#120F17]/60 border-white/10 shadow-2xl'
@@ -364,7 +364,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                 isMenuOpen
                   ? 'bg-[#120F17] border-[#F05C6D]/40 text-[#F05C6D] shadow-none'
                   : isLightSection
-                    ? 'bg-[#120F17] border-[#F05C6D]/40 text-white shadow-[0_10px_30px_rgba(240,92,109,0.2)] hover:border-[#F05C6D] hover:bg-[#F05C6D]'
+                    ? 'bg-[#120F17] border-[#F05C6D]/40 text-white shadow-[0_2px_6px_rgba(34,31,40,0.04),0_8px_24px_rgba(34,31,40,0.07)] hover:border-[#F05C6D] hover:bg-[#F05C6D]'
                     : 'bg-[#120F17]/85 border-white/20 text-white shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:border-[#F05C6D] hover:bg-[#F05C6D]'
               }`}
             >

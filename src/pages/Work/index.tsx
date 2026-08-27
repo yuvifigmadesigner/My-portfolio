@@ -5,6 +5,7 @@ import { SIDE_PROJECTS } from '../../constants';
 import { ArrowUpRight, Quote, Calendar, User, Mail, Plus, Heart, Sparkles, FolderDot, FlaskConical, X } from 'lucide-react';
 import StarBorder from '../../components/StarBorder';
 import MindsetShiftsSection from '../../components/MindsetShiftsSection';
+import { rememberFolderExit, consumeFolderReturn, scrollToWorkFolder } from '../../utils/exitPoint';
 const ProjectModal = React.lazy(() => import('../../components/ProjectModal'));
 // Testimonials Data
 const TESTIMONIALS: {
@@ -116,9 +117,10 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
   const [modalProjects, setModalProjects] = React.useState<any[]>([]);
   const [isSwapped, setIsSwapped] = React.useState(false);
   const FOLDER_PAGES = [
-    { id: 'cap', title: 'College Access Program (CAP)', image: '/CAP/cap.webp', alt: 'CAP UX' },
-    { id: 'cargo', title: 'Fleet Logistics by VCBAY (Cargo)', image: '/cargo/cargo_4x.webp', alt: 'Cargo UX' },
-    { id: 'sqm', title: 'Supplier Query Management (SQM)', image: '/SQM/sqm.webp', alt: 'SQM UX' },
+    // `route` is the case study page this card opens; '' means no page yet.
+    { id: 'cap', title: 'College Access Program (CAP)', image: '/CAP/cap.webp', alt: 'CAP UX', route: 'cap' },
+    { id: 'sqm', title: 'Supplier Query Management (SQM)', image: '/SQM/sqm.webp', alt: 'SQM UX', route: 'sqm' },
+    { id: 'cargo', title: 'Fleet Logistics by VCBAY (Cargo)', image: '/cargo/cargo_4x.webp', alt: 'Cargo UX', route: '' },
   ] as const;
   type FolderPageType = typeof FOLDER_PAGES[number]['id'];
 
@@ -146,6 +148,47 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
 
   const [isVcbayFolderOpen, setIsVcbayFolderOpen] = React.useState(false);
 
+  // Desktop zooms these documents on hover. Touch has no hover, so below the
+  // sm breakpoint a tap toggles the same zoom instead.
+  const [zoomedDoc, setZoomedDoc] = React.useState<'highlights' | 'certificate' | null>(null);
+  const toggleZoom = (id: 'highlights' | 'certificate') => {
+    if (window.innerWidth >= 640) return;
+    setZoomedDoc((current) => (current === id ? null : id));
+  };
+  React.useEffect(() => {
+    if (!isVcbayFolderOpen) setZoomedDoc(null);
+  }, [isVcbayFolderOpen]);
+
+  // The Selected Works opening animation is web only. The card cluster below is
+  // already gated by `hidden sm:block`, but the heading is shared, so it needs
+  // an explicit check.
+  const [isDesktop, setIsDesktop] = React.useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches
+  );
+  React.useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  // Coming back from a case study via "Back to home": land on the folder and
+  // reopen it on the card that was showing. Scroll first, because opening the
+  // modal locks body overflow.
+  React.useEffect(() => {
+    const returningTo = consumeFolderReturn();
+    if (!returningTo) return;
+
+    const match = FOLDER_PAGES.find((p) => p.id === returningTo);
+    if (!match) return;
+
+    scrollToWorkFolder(() => {
+      setFolderPage(match.id);
+      setIsFolderOpen(true);
+    });
+  }, []);
+
   React.useEffect(() => {
     if (isFolderOpen || isVcbayFolderOpen) {
       document.body.classList.add('folder-modal-active');
@@ -171,7 +214,14 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
   return (
     <>
       <section id="work-light-section" className="w-full bg-[#F8F6F0] h-[850px] sm:h-[780px] lg:h-[620px] xl:h-[780px] relative overflow-hidden flex justify-center items-center select-none">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 inline-block select-none z-10">
+        <motion.div
+          className="absolute top-10 left-1/2 z-10"
+          initial={isDesktop ? { opacity: 0, y: -16 } : false}
+          whileInView={isDesktop ? { opacity: 1, y: 0 } : undefined}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+        <div className="-translate-x-1/2 inline-block select-none relative">
           <div className="absolute -top-3.5 left-0 bottom-0 w-[2px] bg-[#F05C6D] z-10">
             <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#F05C6D] shadow-sm" />
           </div>
@@ -182,6 +232,7 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
             <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#F05C6D] shadow-sm" />
           </div>
         </div>
+        </motion.div>
         <div 
           className="absolute top-0 left-0 w-[25vw] h-[25vh] max-w-[320px] max-h-[320px] pointer-events-none z-0 overflow-hidden"
           style={{
@@ -298,7 +349,7 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
               }
             }}
           >
-            <img loading="lazy" decoding="async" src="/vcbay/vacbay_4x.webp" alt="VCBay Page" className="w-full h-full object-contain" />
+            <img loading="lazy" decoding="async" src="/mobile%20view/vacbay_4x.webp" alt="VCBay Page" className="w-full h-full object-contain" />
           </motion.div>
           <motion.div 
             className="absolute pointer-events-auto cursor-pointer"
@@ -324,7 +375,7 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
               }
             }}
           >
-            <img loading="lazy" decoding="async" src="/uxhack/uxhack_4x.webp" alt="UXHack Page" className="w-full h-full object-contain" />
+            <img loading="lazy" decoding="async" src="/mobile%20view/uxhack_4x.webp" alt="UXHack Page" className="w-full h-full object-contain" />
           </motion.div>
           <motion.div 
             className="absolute pointer-events-auto cursor-pointer"
@@ -362,7 +413,8 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
           >
             <img loading="lazy" decoding="async" src="/uxhack/uxhack_cover_4x.webp" alt="UXHack Cover" className="w-full h-full object-contain" />
           </motion.div>
-          <motion.div 
+          <motion.div
+            data-exit-anchor="assignments-folder"
             className="absolute bottom-8 -left-2 w-[155px] h-[200px] z-30 pointer-events-auto cursor-pointer origin-bottom-left"
             style={{ rotate: 15 }}
             onClick={() => setIsFolderOpen(true)}
@@ -377,7 +429,13 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
             />
           </motion.div>
         </div>
-        <div className="hidden sm:block relative w-full max-w-[1440px] min-[2000px]:max-w-[2000px] h-full pointer-events-none">
+        <motion.div
+          className="hidden sm:block relative w-full max-w-[1440px] min-[2000px]:max-w-[2000px] h-full pointer-events-none"
+          initial={{ opacity: 0, y: 34, scale: 0.975 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.12 }}
+        >
           <motion.div 
             className="absolute pointer-events-auto cursor-pointer group z-20"
             animate={isSwapped ? {
@@ -508,7 +566,8 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
           >
             <img loading="lazy" decoding="async" src="/folder/folder_4x.webp" alt="Practice Folder" className="w-[55px] sm:w-[65px] md:w-[72px] lg:w-[50px] xl:w-[72px] transition-transform duration-500 ease-out group-hover:scale-110 drop-shadow-lg" />
           </RepelWrapper>
-          <motion.div 
+          <motion.div
+            data-exit-anchor="assignments-folder"
             className="absolute -left-2 sm:left-0 md:left-2 lg:left-0 xl:left-2 right-auto bottom-12 sm:bottom-16 md:bottom-20 lg:bottom-12 xl:bottom-16 pointer-events-auto cursor-pointer group z-50 origin-bottom-left"
             style={{ rotate: 15 }}
             onClick={() => setIsFolderOpen(true)}
@@ -518,7 +577,7 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
           >
             <img loading="lazy" decoding="async" src="/file_folder/file-folder.png" alt="Assignments" className="w-[210px] sm:w-[230px] md:w-[245px] lg:w-[175px] xl:w-[245px] drop-shadow-2xl" />
           </motion.div>
-        </div>
+        </motion.div>
       </section>
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
@@ -559,13 +618,13 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                   opacity: { duration: 0.35, ease: 'easeOut' },
                 }}
               >
-                <div 
-                  className="relative w-[92vw] sm:w-[88vw] max-w-[940px] transition-transform duration-500 mx-auto drop-shadow-[0_25px_60px_rgba(0,0,0,0.6)]"
+                <div
+                  className="relative w-[92vw] sm:w-[88vw] max-w-[940px] transition-transform duration-500 mx-auto drop-shadow-[0_25px_60px_rgba(0,0,0,0.6)] [transform:translateX(-30.5%)_scale(2)] sm:[transform:none]"
                 >
-                  <img loading="lazy" decoding="async" 
-                    src="/file-folderopen.svg" 
-                    alt="Folder Open" 
-                    className="w-full h-auto object-contain pointer-events-none drop-shadow-2xl" 
+                  <img loading="lazy" decoding="async"
+                    src="/file-folderopen.svg"
+                    alt="Folder Open"
+                    className="w-full h-auto object-contain pointer-events-none drop-shadow-2xl"
                   />
                   <button 
                     onClick={() => setIsFolderOpen(false)}
@@ -623,12 +682,13 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                               e.stopPropagation();
                               const rect = e.currentTarget.getBoundingClientRect();
                               const clickX = e.clientX - rect.left;
-                              if (page.id === 'cap' && clickX < rect.width * 0.45) {
+                              if (page.route && clickX < rect.width * 0.45) {
+                                rememberFolderExit(page.id);
                                 setIsFolderOpen(false);
                                 if (onNavigate) {
-                                  onNavigate('cap');
+                                  onNavigate(page.route);
                                 } else {
-                                  window.location.hash = '#cap';
+                                  window.location.hash = `#${page.route}`;
                                 }
                               } else {
                                 handleFolderPageClick();
@@ -640,20 +700,21 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                               alt={page.alt} 
                               className="w-full h-full object-fill bg-white" 
                             />
-                            {page.id === 'cap' && page.id === folderPage && (
+                            {page.route && page.id === folderPage && (
                               <>
                                 <div
                                   className="absolute bottom-0 left-0 w-[45%] h-[25%] z-30 cursor-pointer"
                                   onClick={(e) => {
                                     e.stopPropagation();
+                                    rememberFolderExit(page.id);
                                     setIsFolderOpen(false);
                                     if (onNavigate) {
-                                      onNavigate('cap');
+                                      onNavigate(page.route);
                                     } else {
-                                      window.location.hash = '#cap';
+                                      window.location.hash = `#${page.route}`;
                                     }
                                   }}
-                                  title="View College Access Program Case Study"
+                                  title={`View ${page.title} Case Study`}
                                 />
                                 <div
                                   className="absolute bottom-0 right-0 w-[55%] h-[25%] z-30 cursor-pointer"
@@ -716,8 +777,8 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                   opacity: { duration: 0.35, ease: 'easeOut' },
                 }}
               >
-                <div 
-                  className="relative w-[92vw] sm:w-[88vw] max-w-[940px] transition-transform duration-500 mx-auto drop-shadow-lg"
+                <div
+                  className="relative w-[92vw] sm:w-[88vw] max-w-[940px] transition-transform duration-500 mx-auto drop-shadow-lg [transform:translateX(-30.5%)_scale(2)] sm:[transform:none]"
                 >
                   <img loading="lazy" decoding="async" 
                     src="/file-folderopen.svg" 
@@ -734,32 +795,42 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                   <div className="absolute inset-0 pointer-events-none z-20">
                     {/* Upper Document: Project Highlights (Subtle Softness at Rest -> Crisp HD on Hover) */}
                     <motion.div
-                      className="absolute left-[34%] sm:left-[36%] top-[5%] sm:top-[4%] w-[56%] sm:w-[52%] aspect-[5760/4096] origin-center pointer-events-auto cursor-zoom-in z-20"
-                      initial={{ rotate: 3, y: 30, opacity: 0, filter: 'blur(1.5px)' }}
-                      animate={{ rotate: 3, y: 0, opacity: 0.96, filter: 'blur(0.5px)' }}
-                      whileHover={{ scale: 1.44, rotate: 0, x: '-12%', y: '10%', zIndex: 70, opacity: 1, filter: 'blur(0px)' }}
+                      className="absolute left-[46%] sm:left-[36%] top-[11%] sm:top-[4%] w-[39%] sm:w-[52%] aspect-[5760/4096] origin-center pointer-events-auto cursor-zoom-in z-20"
+                      initial={{ rotate: 3, y: 30, opacity: 0 }}
+                      animate={
+                        zoomedDoc === 'highlights'
+                          ? { scale: 1.3, rotate: 0, x: 0, y: 0, opacity: 1, zIndex: 70 }
+                          : { scale: 1, rotate: 3, x: 0, y: 0, opacity: 1, zIndex: 20 }
+                      }
+                      whileHover={{ scale: 1.44, rotate: 0, x: '-12%', y: '10%', zIndex: 70, opacity: 1 }}
+                      onClick={() => toggleZoom('highlights')}
                       transition={{ type: 'spring', stiffness: 240, damping: 26 }}
-                      title="Hover to zoom project highlights"
+                      title="Zoom project highlights"
                     >
                       <div className="w-full h-full bg-white rounded-[6px] sm:rounded-[8px] shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.22)] border border-black/10 overflow-hidden flex items-center justify-center">
                         <img 
                           loading="eager" 
                           decoding="sync" 
-                          src="/project highlights.webp" 
-                          alt="Zefyron Project Highlights" 
-                          className="w-full h-full object-contain block pointer-events-none [image-rendering:-webkit-optimize-contrast] [image-rendering:high-quality]" 
+                          src="/Wireframe%20-%209.png" 
+                          alt="Zefyron Wireframe" 
+                          className="w-full h-full object-contain block pointer-events-none" 
                         />
                       </div>
                     </motion.div>
 
                     {/* Lower Layered Document: Certificate (Subtle Softness at Rest -> Crisp HD on Hover) */}
                     <motion.div
-                      className="absolute left-[8%] sm:left-[10%] top-[45%] sm:top-[43%] w-[56%] sm:w-[52%] aspect-[6000/3376] origin-center pointer-events-auto cursor-zoom-in z-25"
-                      initial={{ rotate: -4.5, y: 30, opacity: 0, filter: 'blur(1.5px)' }}
-                      animate={{ rotate: -4.5, y: 0, opacity: 0.96, filter: 'blur(0.5px)' }}
-                      whileHover={{ scale: 1.44, rotate: 0, x: '8%', y: -35, zIndex: 70, opacity: 1, filter: 'blur(0px)' }}
+                      className="absolute left-[46%] sm:left-[10%] top-[52%] sm:top-[43%] w-[39%] sm:w-[52%] aspect-[6000/3376] origin-center pointer-events-auto cursor-zoom-in z-25"
+                      initial={{ rotate: -4.5, y: 30, opacity: 0 }}
+                      animate={
+                        zoomedDoc === 'certificate'
+                          ? { scale: 1.3, rotate: 0, x: 0, y: 0, opacity: 1, zIndex: 70 }
+                          : { scale: 1, rotate: -4.5, x: 0, y: 0, opacity: 1, zIndex: 25 }
+                      }
+                      whileHover={{ scale: 1.44, rotate: 0, x: '8%', y: -35, zIndex: 70, opacity: 1 }}
+                      onClick={() => toggleZoom('certificate')}
                       transition={{ type: 'spring', stiffness: 240, damping: 26 }}
-                      title="Hover to zoom certificate"
+                      title="Zoom certificate"
                     >
                       <div className="w-full h-full bg-white rounded-[6px] sm:rounded-[8px] shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.22)] border border-black/10 overflow-hidden flex items-center justify-center">
                         <img 
@@ -767,7 +838,7 @@ const Work: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate })
                           decoding="sync" 
                           src="/certificate.webp" 
                           alt="VCBay Internship Certificate" 
-                          className="w-full h-full object-contain block pointer-events-none [image-rendering:-webkit-optimize-contrast] [image-rendering:high-quality]" 
+                          className="w-full h-full object-contain block pointer-events-none" 
                         />
                       </div>
                     </motion.div>
