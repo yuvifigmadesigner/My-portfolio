@@ -1,176 +1,357 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Yuvraj Gupta</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['PP Editorial New', 'PP Mori', 'serif'],
-              stardos: ['Stardos Stencil', 'serif'],
-              ppmori: ['PP Mori', 'sans-serif'],
-              editorial: ['PP Editorial New', 'serif'],
-              body: ['PP Editorial New', 'serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              'glass-border': 'rgba(255, 255, 255, 0.1)',
-            },
-            animation: {
-              'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
-              'star-movement-top': 'star-movement-top linear infinite alternate',
-              'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
-            },
-            keyframes: {
-              'star-movement-bottom': {
-                '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
-                '100%': { transform: 'translate(-100%, 0%)', opacity: '0' },
-              },
-              'star-movement-top': {
-                '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
-                '100%': { transform: 'translate(100%, 0%)', opacity: '0' },
-              },
-              'border-beam': {
-                '100%': { 'offset-distance': '100%' },
-              },
-            },
-          }
-        }
-      }
-    </script>
-    <style>
-      @font-face {
-        font-family: 'PP Editorial New';
-        src: url('/new/PPEditorialNew-Regular-BF644b214ff145f.woff2') format('woff2');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'PP Editorial New';
-        src: url('/new/PPEditorialNew-Ultralight-BF644b21500d0c0.woff2') format('woff2');
-        font-weight: 200;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'PP Editorial New';
-        src: url('/new/PPEditorialNew-Ultrabold-BF644b21500840c.woff2') format('woff2');
-        font-weight: 800;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'PP Mori';
-        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-Regular.woff2') format('woff2');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'PP Mori';
-        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-SemiBold.woff2') format('woff2');
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'PP Mori';
-        src: url('https://cdn.jsdelivr.net/gh/lucas-leth/fonts@master/ppmori/PPMori-Extrabold.woff2') format('woff2');
-        font-weight: 800;
-        font-style: normal;
-        font-display: swap;
-      }
-      /* Custom Noise Utility */
-      .bg-noise {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-      }
-      
-      /* Page Transitions */
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-
-      /* Card Staggered Entrance */
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* Gentle Pulse Animation for Buttons */
-      @keyframes pulseGlow {
-        0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,255,255,0); }
-        50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-      }
-      .group:hover .group-hover-pulse {
-        animation: pulseGlow 2s infinite ease-in-out;
-      }
-
-      /* Custom Micro-Animations for Hero Cards (Active All the Time) */
-      @keyframes gentleWiggle {
-        0%, 70%, 100% { transform: rotate(0deg) scale(1); }
-        75% { transform: rotate(-10deg) scale(1.08); }
-        85% { transform: rotate(10deg) scale(1.08); }
-        95% { transform: rotate(-5deg) scale(1.02); }
-      }
-      .animate-wiggle-always {
-        animation: gentleWiggle 4s ease-in-out infinite;
-      }
-
-      @keyframes bob {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-      }
-      .animate-bob-always {
-        animation: bob 2s ease-in-out infinite;
-      }
-      
-      /* Hide scrollbar globally */
-      ::-webkit-scrollbar {
-        display: none;
-      }
-      html, body {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      /* Dreamy orbiting light for "You?" avatar */
-      @keyframes dreamyOrbit {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      @keyframes dreamyPulse {
-        0%, 100% { opacity: 0.4; }
-        50% { opacity: 1; }
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.1",
-    "ogl": "https://esm.sh/ogl@1.0.11",
-    "framer-motion": "https://esm.sh/framer-motion@11.15.0?external=react,react-dom"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Yuvraj Gupta · Product Designer</title>
+  <meta name="description" content="Yuvraj Gupta is a Product Designer and UX/UI Designer with one foot in design and the other in engineering.">
+  <meta name="theme-color" content="#F2F2F2">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23222'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='%23F05C6D' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="Assets/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
-  <body class="bg-[#120F17] text-white">
-    <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
+<body>
+  <a class="skip-link" href="#journey">Skip to content</a>
+
+  <!-- Figma-style rulers, pinned to the screen. Top-left corner = (0,0).
+       Both rulers measure the viewport, so their numbers never change while scrolling. -->
+  <div class="ruler ruler-x" aria-hidden="true"></div>
+  <div class="ruler ruler-y" aria-hidden="true"></div>
+  <div class="ruler-corner" aria-hidden="true"></div>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <div class="hero-art">
+        <img class="art-pad" src="Assets/hero/mousepad.webp" alt="" width="2008" height="1178" fetchpriority="high" decoding="async" aria-hidden="true">
+        <!-- Earbuds: 4× Figma exports (shadow included), placed at their design spots.
+             data-parallax = how much faster than the page they drift on scroll. -->
+        <img class="art-case" data-parallax="0.1" src="Assets/hero/earbuds-case.png" alt="" width="960" height="1035" decoding="async" aria-hidden="true">
+        <img class="art-bud art-bud--a" data-parallax="0.16" src="Assets/hero/earbud-a.png" alt="" width="219" height="229" decoding="async" aria-hidden="true">
+        <img class="art-bud art-bud--b" data-parallax="0.13" src="Assets/hero/earbud-b.png" alt="" width="258" height="252" decoding="async" aria-hidden="true">
+
+        <!-- Colour picker: recolours the pink words of the hero headline -->
+        <div class="picker" data-parallax="0.06" role="group" aria-label="Pick the colour of the pink headline words">
+          <div class="picker-sv" role="slider" tabindex="0" aria-label="Saturation and brightness" aria-valuemin="0" aria-valuemax="100"><span class="picker-knob"></span></div>
+          <button type="button" class="picker-swatch" aria-label="Pick a colour from the screen">
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M10.3 2.9 9.1 1.7a.5.5 0 0 0-.7 0L6.9 3.2l-.9-.9-.7.7.7.7-4.3 4.3-.2 2.1 2.1-.2 4.3-4.3.7.7.7-.7-.9-.9 1.5-1.5a.5.5 0 0 0 .1-.7ZM3.4 9.3l-.9-.9L6.4 4.5l.9.9-3.9 3.9Z" fill="#fff"/></svg>
+          </button>
+          <span class="picker-hue" role="slider" tabindex="0" aria-label="Hue" aria-valuemin="0" aria-valuemax="360"><i></i></span>
+          <span class="picker-alpha" role="slider" tabindex="0" aria-label="Opacity" aria-valuemin="0" aria-valuemax="100"><i></i></span>
+          <span class="picker-label picker-label--hex" aria-hidden="true">HEX</span>
+          <span class="picker-label picker-label--r" aria-hidden="true">R</span>
+          <span class="picker-label picker-label--g" aria-hidden="true">G</span>
+          <span class="picker-label picker-label--b" aria-hidden="true">B</span>
+          <label class="picker-field picker-field--hex"><span class="sr-only">Hex colour</span><input type="text" value="#F05C6D" maxlength="7" spellcheck="false" autocomplete="off" data-hex></label>
+          <span class="picker-rgb">
+            <label class="picker-field"><span class="sr-only">Red</span><input type="text" inputmode="numeric" value="240" maxlength="3" autocomplete="off" data-channel="0"></label>
+            <label class="picker-field"><span class="sr-only">Green</span><input type="text" inputmode="numeric" value="92" maxlength="3" autocomplete="off" data-channel="1"></label>
+            <label class="picker-field"><span class="sr-only">Blue</span><input type="text" inputmode="numeric" value="109" maxlength="3" autocomplete="off" data-channel="2"></label>
+          </span>
+        </div>
+
+        <!-- Fonts panel: pick a font to restyle the headline -->
+        <div class="fonts" data-parallax="0.09" role="group" aria-label="Try a headline font">
+          <div class="fonts-head">
+            <span>Fonts</span>
+            <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M1 1l8 8M9 1 1 9" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="fonts-search" aria-hidden="true"><span class="fonts-aa">Aa</span>Select fonts</div>
+          <div class="fonts-list">
+            <button type="button" class="font-opt" data-font="" aria-pressed="true" style="font-family:var(--font)">Plus Jakarta Sans</button>
+            <button type="button" class="font-opt" data-font="'Aeonik Soft', var(--font)" aria-pressed="false" style="font-family:'Aeonik Soft'">Aeonik Soft</button>
+            <button type="button" class="font-opt" data-font="'Hind Mysuru', var(--font)" data-lang="hi" aria-pressed="false" style="font-family:'Hind Mysuru'">Hind</button>
+            <button type="button" class="font-opt" data-font="'PP Editorial New', Georgia, serif" aria-pressed="false" style="font-family:'PP Editorial New'">PP Editorial New</button>
+            <button type="button" class="font-opt" data-font="'Stardos Stencil', var(--font)" aria-pressed="false" style="font-family:'Stardos Stencil';font-weight:700">Stardos Stencil</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1 class="hero-title" id="hero-title">
+            <span class="w" style="--i:0">Same</span> <span class="w" style="--i:1">tools,</span> <span class="w" style="--i:2">same</span> <span class="w" style="--i:3">start</span> <img class="w hero-plane" style="--i:4" src="Assets/hero/plane-icon.png" alt="" width="190" height="189"> <span class="w" style="--i:5">taste</span> <span class="w" style="--i:6">sets</span> <span class="w" style="--i:7">me</span> <span class="w" style="--i:8">apart</span> <img class="w hero-char" style="--i:9" src="Assets/mascots/mascot-designer.webp" alt="" width="171" height="171"> <span class="accent"><span class="w" style="--i:10">I’m</span> <span class="w" style="--i:11">Yuvraj</span> <span class="w" style="--i:12">Gupta</span> <span class="w" style="--i:13">“design</span> <span class="w" style="--i:14">is</span> <span class="w" style="--i:15">my</span> <span class="w" style="--i:16">art”</span></span>
+          </h1>
+          <p class="hero-sub">Product Designer <span aria-hidden="true">|</span><span class="sr-only">,</span> UX/UI Designer</p>
+          <div class="hero-cta">
+            <a class="btn btn-dark" href="https://drive.google.com/drive/folders/1_MSDED-xsp_yWf4cQc0NZUKJHNhLR1vV?usp=sharing" target="_blank" rel="noopener">View Resume</a>
+            <a class="btn btn-ghost" href="#contact">Let’s Talk</a>
+          </div>
+        </div>
+      </div>
+      <script>
+        /* Scale the hero artwork before first paint so it never flashes at the wrong size */
+        (function () {
+          var h = document.getElementById('hero'), c = h.querySelector('.hero-inner'), vw = document.documentElement.clientWidth;
+          h.style.setProperty('--s', (c.getBoundingClientRect().width / 1200).toFixed(4));
+          h.style.setProperty('--ms', (Math.min(vw, 520) / 390).toFixed(4));
+        })();
+      </script>
+    </section>
+
+    <!-- ============ JOURNEY ============ -->
+    <section class="section journey" id="journey" aria-labelledby="journey-title">
+      <div class="container">
+        <h2 class="section-title reveal" id="journey-title">My Design <img class="title-icon" src="Assets/mascots/mascot-travel.webp" alt="" width="48" height="48" loading="lazy"> Journey</h2>
+
+        <ol class="timeline">
+          <li class="job is-open">
+            <button type="button" class="job-head" aria-expanded="true" aria-controls="job-1">
+              <img class="job-logo" src="Assets/icons/companies/zefyron.webp" alt="" width="64" height="64" loading="lazy">
+              <span class="job-meta">
+                <span class="job-co">Zefyron (via VCBay Solutions)</span>
+                <span class="job-role">UX/UI Design Intern (Full time remote)</span>
+              </span>
+              <svg class="job-chev" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="job-body" id="job-1">
+              <div class="job-body-in">
+                <p>making a european startup network feel worth paying for.</p>
+                <ul class="stars">
+                  <li>designed the free vs premium split for chat, with upgrade prompts for things like confidential messages and attachments, and researched where ai fits best in each plan.</li>
+                  <li>revamped the website with new metrics sections and a booking page, and tested and reviewed the web and mobile saas app. all of it is live today.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="job-date"><time datetime="2026-02">Feb 2026</time> – <time datetime="2026-07">Jul 2026</time></p>
+          </li>
+
+          <li class="job">
+            <button type="button" class="job-head" aria-expanded="false" aria-controls="job-2">
+              <img class="job-logo" src="Assets/icons/companies/frover.webp" alt="" width="64" height="64" loading="lazy">
+              <span class="job-meta">
+                <span class="job-co">Frover labs</span>
+                <span class="job-role">UX/UI Design Intern (Part time hybrid)</span>
+              </span>
+              <svg class="job-chev" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="job-body" id="job-2">
+              <div class="job-body-in">
+                <p>making client websites lead visitors to the one thing that matters.</p>
+                <ul class="stars">
+                  <li>planned page flow and information architecture for client websites, so key sections came in a clear order that matched each brand.</li>
+                  <li>redesigned landing pages to pull attention toward the main call to action and remove points where visitors dropped off.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="job-date"><time datetime="2024-11">Nov 2024</time> – <time datetime="2025-03">Mar 2025</time></p>
+          </li>
+
+          <li class="job">
+            <button type="button" class="job-head" aria-expanded="false" aria-controls="job-3">
+              <img class="job-logo" src="Assets/icons/companies/nit-goa.webp" alt="" width="64" height="64" loading="lazy">
+              <span class="job-meta">
+                <span class="job-co">NIT Goa</span>
+                <span class="job-role">UI Design Intern (lead student project onsite)</span>
+              </span>
+              <svg class="job-chev" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="job-body" id="job-3">
+              <div class="job-body-in">
+                <p>making a national institute’s website feel modern without losing what people came for.</p>
+                <ul class="stars">
+                  <li>co-led a team of batchmates and juniors to build version 2.0 of the official website for the campus control cell, redesigning the ui and visual system while keeping the content structure intact.</li>
+                  <li>worked with engineers to track progress, review builds and run qa, so the live site matched the design.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="job-date"><time datetime="2023-06">Jun 2023</time> – <time datetime="2024-03">Mar 2024</time></p>
+          </li>
+
+          <li class="job job--you">
+            <div class="job-head">
+              <span class="job-logo job-logo--add" aria-hidden="true">
+                <svg viewBox="0 0 64 64"><rect x="0.75" y="0.75" width="62.5" height="62.5" rx="7.25" fill="#fff" stroke="#D6D6D6" stroke-width="1.5" stroke-dasharray="15.6 9.4" stroke-dashoffset="-3"/><path d="M19.5 32h25M32 19.5v25" stroke="#D6D6D6" stroke-width="4" stroke-linecap="round"/></svg>
+              </span>
+              <span class="job-meta">
+                <span class="job-co">Your company</span>
+                <span class="job-role"><span class="avail">Available now</span> <span aria-hidden="true">·</span> Remote/open to relocate</span>
+              </span>
+            </div>
+            <a class="btn btn-dark job-cta" href="#contact">Hire Me</a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <h2 class="section-title reveal" id="work-title">Selected <img class="title-icon" src="Assets/mascots/mascot-designer.webp" alt="" width="48" height="48" loading="lazy"> Projects</h2>
+
+        <div class="work">
+          <div class="work-row work-row--top">
+            <article class="nook reveal">
+              <div class="nook-copy">
+                <div class="nook-id">
+                  <img class="nook-icon" src="Assets/icons/nook-app-icon.svg" alt="NOOK app icon" width="64" height="64" loading="lazy">
+                  <div>
+                    <h3>NOOK</h3>
+                    <p class="nook-sub">Local companion app</p>
+                  </div>
+                </div>
+                <div class="nook-actions">
+                  <a class="btn btn-sm btn-outline-light" href="nook.html">Read Case Study</a>
+                  <a class="btn btn-sm btn-light" href="https://www.figma.com/design/DsJaprF436ir3BRRKmRwo9/Nook?node-id=66-5&amp;t=bqf6B9m6JjieWkl5-1" target="_blank" rel="noopener">View in Figma</a>
+                </div>
+              </div>
+              <img class="nook-shot" src="Assets/work/sizes/nook-800.webp" srcset="Assets/work/sizes/nook-400.webp 400w, Assets/work/sizes/nook-800.webp 800w, Assets/work/sizes/nook-1200.webp 1200w" sizes="(min-width: 768px) 389px, calc(100vw - 72px)" alt="Two NOOK screens: a feed of nearby plans like a dog walk and a morning run, and a form to post your own plan" width="1945" height="1800" loading="lazy" decoding="async">
+            </article>
+
+            <ul class="points">
+              <li class="point reveal">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 3.2 14.6 8.4 20.3 9.3 16.2 13.3 17.2 19 12 16.3 6.9 19 7.8 13.3 3.7 9.3 9.4 8.4Z" fill="none" stroke="#1F4A85" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+                <p class="point-lead">Remember when a friend just knocked and asked, ‘kheline chalega?’ Nook brings that back, for grown-ups.</p>
+              </li>
+              <li class="point reveal">
+                <span class="point-icon" aria-hidden="true"><img src="Assets/icons/bored-to-door.svg" alt="" width="20" height="20" loading="lazy"></span>
+                <p><b>From bored to out the door:</b> go from a free hour to a real plan in minutes.</p>
+              </li>
+              <li class="point reveal">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="9" cy="8.5" r="3.2" fill="none" stroke="#1F4A85" stroke-width="1.5"/><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8M15.4 5.6a3.2 3.2 0 0 1 0 6M17.2 14.4c1.8.6 3 2.2 3.3 4.6" fill="none" stroke="#1F4A85" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <p><b>Small groups, real bonds:</b> a close circle, not a crowd.</p>
+              </li>
+              <li class="point reveal">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="8.3" fill="none" stroke="#1F4A85" stroke-width="1.5"/><path d="M8.6 13.8c.8 1.3 2 2 3.4 2s2.6-.7 3.4-2" fill="none" stroke="#1F4A85" stroke-width="1.5" stroke-linecap="round"/><circle cx="9.3" cy="9.8" r="1" fill="#1F4A85"/><circle cx="14.7" cy="9.8" r="1" fill="#1F4A85"/></svg></span>
+                <p><b>Safe from the first hello:</b> every step is designed so meeting a stranger feels easy and comfortable.</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="work-row work-row--bottom">
+            <article class="proj proj--art reveal">
+              <div class="proj-copy">
+                <h3>The Art of Better Decisions.</h3>
+                <p class="proj-sub">From Friction to Flow</p>
+              </div>
+              <img class="proj-shot" src="Assets/work/sizes/better-decisions-800.webp" srcset="Assets/work/sizes/better-decisions-400.webp 400w, Assets/work/sizes/better-decisions-800.webp 800w, Assets/work/sizes/better-decisions-1200.webp 1200w" sizes="(min-width: 768px) 389px, calc(100vw - 80px)" alt="Three app screens: a bank offers page, an F1 album music player and a dark AI stock research chat" width="1945" height="1800" loading="lazy" decoding="async">
+              <a class="btn btn-sm btn-dark proj-btn" href="https://redesigngallery.vercel.app/" target="_blank" rel="noopener">Visit Site</a>
+            </article>
+
+            <article class="proj proj--zef reveal">
+              <div class="proj-copy">
+                <h3>Zefyron Landing page</h3>
+                <p class="proj-sub">Highlighted samples &amp; Iterations</p>
+              </div>
+              <img class="proj-shot" src="Assets/work/sizes/zefyron-840.webp" srcset="Assets/work/sizes/zefyron-420.webp 420w, Assets/work/sizes/zefyron-840.webp 840w, Assets/work/sizes/zefyron-1260.webp 1260w" sizes="(min-width: 768px) 405px, calc(130.6vw - 105px)" alt="Collage of Zefyron landing page sections: hero, testimonials, demo booking and footer" width="2025" height="1440" loading="lazy" decoding="async">
+              <span class="btn btn-sm btn-outline proj-btn" role="note">
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 7V5.2a2.7 2.7 0 0 1 5.4 0V7" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+                Under NDA
+              </span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 class="section-title reveal" id="about-title">A Bit About <img class="title-icon" src="Assets/mascots/mascot-plain.webp" alt="" width="48" height="48" loading="lazy"> Me</h2>
+        <p class="bio reveal">Hello! I’m <b>Yuvraj Gupta</b>, a <b>Product Designer</b> with one foot in <b>design</b> and the other in <b>engineering</b>. I learned to <b>move fast</b> in hackathons and to <b>think about impact</b> in startups, so today I design products that ship quickly without losing what matters: being <b>clear</b>, <b>useful</b> and <b>easy to love</b>.</p>
+
+        <div class="about-grid">
+          <figure class="about-photo reveal">
+            <img src="Assets/about/sizes/photo-800.webp" srcset="Assets/about/sizes/photo-400.webp 400w, Assets/about/sizes/photo-800.webp 800w, Assets/about/sizes/photo-1200.webp 1200w" sizes="(min-width: 768px) 370px, calc(100vw - 48px)" alt="Portrait of Yuvraj Gupta in a white shirt against a pink background" width="1500" height="1800" loading="lazy" decoding="async">
+          </figure>
+
+          <div class="about-card reveal">
+            <dl class="facts">
+              <div class="fact"><dt>Designation</dt><dd>Product Designer</dd></div>
+              <div class="fact"><dt>Experience</dt><dd>2 years</dd></div>
+              <div class="fact"><dt>Location</dt><dd>Silvassa, D&amp;NH</dd></div>
+              <div class="fact"><dt>Education</dt><dd>NIT GOA ’25</dd></div>
+              <div class="fact fact--wide"><dt>Email</dt><dd><a href="mailto:yuvrajkumar0221@gmail.com">Yuvrajkumar0221@gmail.com</a><button type="button" class="copy" data-copy="yuvrajkumar0221@gmail.com" aria-label="Copy email address"><svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><rect x="4.5" y="4.5" width="8" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.17"/><path d="M2.7 9.3c-.6 0-1.2-.5-1.2-1.2V2.7c0-.6.5-1.2 1.2-1.2h5.4c.6 0 1.2.5 1.2 1.2" fill="none" stroke="currentColor" stroke-width="1.17" stroke-linecap="round"/></svg></button></dd></div>
+              <div class="fact fact--wide"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/yuvrajgupta-ux/" target="_blank" rel="noopener">https://www.linkedin.com/in/yuvrajgupta-ux/</a><button type="button" class="copy" data-copy="https://www.linkedin.com/in/yuvrajgupta-ux/" aria-label="Copy LinkedIn link"><svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><rect x="4.5" y="4.5" width="8" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.17"/><path d="M2.7 9.3c-.6 0-1.2-.5-1.2-1.2V2.7c0-.6.5-1.2 1.2-1.2h5.4c.6 0 1.2.5 1.2 1.2" fill="none" stroke="currentColor" stroke-width="1.17" stroke-linecap="round"/></svg></button></dd></div>
+            </dl>
+            <div class="toolkit">
+              <p class="toolkit-label">My Toolkit</p>
+              <div class="marquee">
+                <ul class="marquee-track">
+                  <li class="tool"><img src="Assets/icons/tools/sizes/figma-132.webp" alt="Figma" title="Figma" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/framer-132.webp" alt="Framer" title="Framer" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/claude-code-132.webp" alt="Claude Code" title="Claude Code" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/claude-132.webp" alt="Claude" title="Claude" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/gemini-132.webp" alt="Gemini" title="Gemini" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/stitch-132.webp" alt="Stitch" title="Stitch" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/linear-132.webp" alt="Linear" title="Linear" width="44" height="44" loading="lazy"></li>
+                  <li class="tool"><img src="Assets/icons/tools/sizes/notion-132.webp" alt="Notion" title="Notion" width="44" height="44" loading="lazy"></li>
+                  <!-- second copy keeps the loop seamless -->
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/figma-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/framer-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/claude-code-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/claude-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/gemini-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/stitch-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/linear-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                  <li class="tool" aria-hidden="true"><img src="Assets/icons/tools/sizes/notion-132.webp" alt="" width="44" height="44" loading="lazy"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-side reveal">
+            <article class="note">
+              <h3><img src="Assets/icons/currently-building.svg" alt="" width="24" height="24" loading="lazy">Currently Building</h3>
+              <p>A community app for the everyday problems of housing societies. Not another WhatsApp group. More soon.</p>
+            </article>
+            <article class="note">
+              <h3><img src="Assets/icons/outside-of-design.svg" alt="" width="24" height="24" loading="lazy">Outside of Design</h3>
+              <p>You’ll probably find me chasing good light with my phone. Still learning, but every golden hour feels like a new lesson.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT / BOOKING ============ -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 class="section-title reveal" id="contact-title">Let’s Build <img class="title-icon" src="Assets/mascots/mascot-fire.webp" alt="" width="48" height="48" loading="lazy"> Together</h2>
+
+        <!-- Cal.com inline booking (book-with-yuvi/15min). The embed script loads only when
+             this section gets near the screen, so it never slows down the first paint. -->
+        <div class="cal-field reveal">
+          <div class="cal-embed" id="cal-inline-15min" data-cal-link="book-with-yuvi/15min" data-cal-namespace="15min">
+            <!-- progressive blur on the bottom edge (web layout only, see CSS) -->
+            <div class="cal-blur" aria-hidden="true"></div>
+            <noscript><p class="cal-fallback">Book a 15 min call: <a href="https://cal.com/book-with-yuvi/15min">cal.com/book-with-yuvi/15min</a></p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="section footer">
+    <div class="container footer-grid">
+      <!-- Crowd animation: Assets/footer/crowd.json (Lottie) drawn on the canvas
+           over the pink gradient. One 342×360 file serves both the mobile and web card. -->
+      <div class="crowd">
+        <canvas class="crowd-canvas" aria-hidden="true"></canvas>
+        <p class="crowd-title">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="7" cy="7" r="4.75" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m10.6 10.6 3.4 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Search ends here</span><i class="crowd-caret" aria-hidden="true"></i>
+        </p>
+      </div>
+
+      <nav class="navcard" aria-label="Quick navigation">
+        <h2><span class="hide-sm">Quick </span>Navigation</h2>
+        <ul>
+          <li><a href="#hero">Hero</a></li>
+          <li><a href="#journey">Experience</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="https://drive.google.com/drive/folders/1_MSDED-xsp_yWf4cQc0NZUKJHNhLR1vV?usp=sharing" target="_blank" rel="noopener">Resume</a></li>
+        </ul>
+        <p class="copyright">© 2026 Yuvraj Gupta. <br class="show-sm">Made with curiosity and too many Figma frames.</p>
+      </nav>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/main.js" defer></script>
 </body>
 </html>

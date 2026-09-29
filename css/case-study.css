@@ -1,0 +1,338 @@
+/* =========================================================
+   NOOK case study (nook.html)
+   Loaded after style.css: fonts, tokens, base, .btn and motion come from there.
+   Design: Assets/nook/design/web.svg (1440) + Mobile.svg (390).
+   Web: a 1146px frame (lines at 147 and 963 on a 1440 screen) = 816px story column
+   (714px content + 50px padding each side) + 330px sticky contents list.
+   ========================================================= */
+
+html { scroll-padding-top: 0; }
+
+/* design px → screen: 1 on web, 0.634 on mobile (the mobile characters are 52 vs 82) */
+.cs-page { --k: .634; }
+@media (min-width: 768px) { .cs-page { --k: 1; } }
+
+/* ---------- Frame ---------- */
+.cs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-inline: 16px;
+}
+@media (min-width: 768px) {
+  .cs { width: min(714px, 100% - 64px); margin-inline: auto; }
+}
+@media (min-width: 1080px) {
+  .cs {
+    width: min(1146px, 100% - 48px);
+    grid-template-columns: minmax(0, 816fr) minmax(0, 330fr);
+    grid-template-areas: "intro ." "body aside";
+  }
+  .cs-intro { grid-area: intro; }
+  .cs-body { grid-area: body; }
+  .cs-intro, .cs-body {
+    padding-inline: 50px;
+    border-inline: 1px solid var(--line);
+  }
+}
+
+/* ---------- Intro ---------- */
+/* 50px above the app icon, the same breathing room every section gets under its line */
+.cs-intro { padding-top: 50px; padding-bottom: 50px; }
+.cs-id { display: flex; align-items: center; gap: 16px; }
+.cs-id img { flex: none; width: 48px; height: 48px; }
+.cs-name { color: var(--ink); font-weight: 500; }
+.cs-kind { color: var(--ink-2); }
+
+.cs-title {
+  margin-top: 24px;
+  font-size: clamp(24px, 7.18vw, 28px);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.cs-intro .cs-card { margin-top: 24px; }
+.cs-intro .cs-art, .cs-intro .cs-facts { margin-top: 16px; }
+
+@media (min-width: 768px) {
+  .cs-id img { width: 70px; height: 70px; }
+  .cs-title { font-size: 40px; }
+  .cs-intro .cs-art, .cs-intro .cs-facts { margin-top: 24px; }
+}
+
+/* Cover art: 714 × 405 with a white 3px frame (2px on mobile) */
+.cs-art {
+  overflow: hidden;
+  aspect-ratio: 358 / 201.3; /* mobile frame is a touch wider than the web one */
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: #fff;
+}
+.cs-art img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 768px) { .cs-art { aspect-ratio: 714 / 405; border-width: 3px; } }
+
+/* Project facts: dark card, the posted plan peeking in from the right on web */
+.cs-facts {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 16px 18px;
+  border-radius: 8px;
+  background: var(--dark);
+  box-shadow: 0 2px 8px rgba(46, 74, 101, .04);
+  color: #fff;
+}
+.cs-facts dl {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 16px;
+}
+.cs-facts dt, .cs-tools-label {
+  font-size: 12px; line-height: 14px;
+  color: var(--ink-3);
+}
+.cs-facts dd { margin: 7px 0 0; line-height: 22px; font-weight: 500; }
+.cs-tools-label { margin-top: 18px; }
+.cs-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+.cs-tools li { width: 44px; height: 44px; overflow: hidden; border-radius: 4px; }
+.cs-tools img { width: 100%; height: 100%; object-fit: cover; }
+.cs-post { display: none; }
+
+@media (min-width: 768px) {
+  .cs-facts { padding: 24px 16px; }
+  .cs-facts dl { grid-template-columns: repeat(2, minmax(0, 211px)); gap: 21px 16px; }
+  .cs-facts dd { line-height: 24px; }
+  .cs-tools-label { margin-top: 21px; }
+  .cs-tools { margin-top: 12px; }
+  /* 310.5 × 227.5 at (431, 54.5): on the 714px card it runs 27.5px past the right edge like
+     the design; on narrower cards it keeps its left edge, so it never slides under the facts */
+  .cs-post {
+    display: block;
+    position: absolute; top: 54.5px; left: 431px;
+    width: 310.5px; max-width: none; height: auto;
+    pointer-events: none;
+  }
+}
+
+/* ---------- Sections ---------- */
+.cs-sec { position: relative; padding: 52px 0 50px; }
+/* Full-bleed divider, like the design's lines that run edge to edge. Drawn as a clipped
+   box-shadow so it paints past the column without making the page wider (a -100vw box
+   would, and phones would zoom the page out to fit it). */
+.cs-sec::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--line);
+  box-shadow: 0 0 0 100vmax var(--line);
+  clip-path: inset(0 -100vmax);
+  pointer-events: none;
+}
+.cs-h2 {
+  margin-bottom: 24px;
+  font-size: clamp(24px, 7.18vw, 28px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.cs-lead { color: var(--ink-2); font-weight: 500; line-height: 1.7; }
+.cs-sec > * + * { margin-top: 16px; }
+.cs-sec > .cs-h2 + * { margin-top: 0; }
+
+@media (min-width: 768px) {
+  .cs-sec { padding-top: 50px; }
+  .cs-h2 { margin-bottom: 40px; font-size: 40px; }
+}
+
+/* Lead list ("Questions I started with") */
+.cs-qs { margin-top: 0; color: var(--ink-2); font-weight: 500; line-height: 1.7; }
+.cs-qs ul { margin-top: 0; }
+.cs-sec > .cs-lead + .cs-qs { margin-top: 0; }
+
+/* ---------- Cards ---------- */
+.cs-card {
+  position: relative;
+  padding: 16px 16px 21px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, .05);
+  color: var(--ink-4);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: .005em;
+}
+.cs-card h3 {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 9px;
+  color: var(--ink);
+  font-size: inherit;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.cs-card > p + p { margin-top: 22.4px; }
+.ic { flex: none; width: 20px; height: 20px; fill: currentColor; }
+
+.cs-card--dark {
+  background: url("../Assets/nook/sizes/card-pattern-1071.webp") center top / 100% auto no-repeat, var(--dark);
+  color: var(--ink-3);
+}
+.cs-card--dark h3 { color: #fff; }
+
+@media (min-width: 768px) {
+  .cs-card h3 { margin-bottom: 8px; font-size: 16px; line-height: 24px; }
+  .cs-card h3 .ic { width: 24px; height: 24px; }
+  .cs-card h3 .ic--20 { width: 20px; height: 20px; }
+}
+
+/* Bullets: 4px dot 8px in, text 21px in (24px for the lead list) */
+.cs-dots > li { position: relative; padding-left: 21px; }
+/* dot centred on the first line, whatever the line height */
+.cs-dots > li::before {
+  content: "";
+  position: absolute; left: 8px; top: 9.2px; top: calc(.5lh - 2px);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.cs-qs .cs-dots > li { padding-left: 24px; }
+.cs-abc { counter-reset: abc; }
+.cs-abc > li { position: relative; padding-left: 21px; counter-increment: abc; }
+.cs-abc > li::before { content: counter(abc, lower-alpha) "."; position: absolute; left: 4px; }
+
+/* Character resting on a card's top edge (design px: --cw wide, --rise above the card).
+   The card makes room for it: --gap above the character + the part that sticks out. */
+.has-char { margin-top: calc(var(--gap, 16px) + var(--rise) * var(--k) * 1px) !important; }
+.cs-char {
+  position: absolute; z-index: 2;
+  right: 0; top: calc(var(--rise) * var(--k) * -1px);
+  width: calc(var(--cw) * var(--k) * 1px);
+  max-width: none; height: auto;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .has-char[data-gap="24"] { --gap: 24px; }
+}
+
+/* ---------- Tables ---------- */
+.cs-table {
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid var(--line);
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: .005em;
+}
+.cs-table th {
+  padding: 12px 16px;
+  background: #fff;
+  font-size: 12px; line-height: 15px; font-weight: 600;
+  letter-spacing: .07em;
+  text-align: left;
+  color: var(--ink);
+}
+.cs-table td {
+  padding: 12px 16px;
+  vertical-align: top;
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.cs-table td + td { color: var(--ink); }
+.cs-table th + th, .cs-table td + td { border-left: 1px solid var(--line); }
+
+/* ---------- Screen showcases ---------- */
+/* One 714 × 501 design frame, scaled as a whole: every position is in design px × 100cqw / 714 */
+.cs-shots {
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+  aspect-ratio: 714 / 501;
+  border-radius: 8px;
+  background: #fff;
+}
+.cs-shots img {
+  position: absolute;
+  left: calc(var(--x) * 100cqw / 714);
+  top: calc(var(--y) * 100cqw / 714);
+  width: calc(var(--w, 216) * 100cqw / 714);
+  max-width: none; height: auto;
+}
+/* phones that float: 0 20 25 -5 rgba(0,0,0,.1), on the phone's 15.43px corners */
+.cs-shots .lift {
+  border-radius: calc(15.43 * 100cqw / 714);
+  box-shadow: 0 calc(20 * 100cqw / 714) calc(25 * 100cqw / 714) calc(-5 * 100cqw / 714) rgba(0, 0, 0, .1);
+}
+
+/* ---------- Reflection ---------- */
+.cs-sec--last { padding-bottom: 152px; }
+.cs-figma {
+  width: 100%;
+  background: var(--line);
+  color: var(--ink);
+  font-weight: 500;
+}
+/* the closing paragraph is set smaller than the other section intros */
+.cs-lead--sm { font-size: 14px; line-height: 1.6; }
+/* Back to portfolio: outline version of the Figma button, sitting 8px under it */
+.cs-home {
+  width: 100%;
+  border: 1px solid #999999;
+  color: var(--ink);
+  font-weight: 500;
+}
+.cs-sec > .cs-figma + .cs-home { margin-top: 8px; }
+@media (hover: hover) {
+  .cs-figma:hover { background: #CACACA; }
+  .cs-home:hover { border-color: var(--ink); background: rgba(0, 0, 0, .03); }
+}
+
+/* Park scene: full width, its own faded top melts into the page */
+.cs-foot {
+  position: relative;
+  display: block;
+  width: 100%; height: auto;
+  aspect-ratio: 1440 / 449;
+  margin-top: -40px;
+  pointer-events: none;
+  /* the export's blurred top stops at a hard edge; fade it in like the design */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent, #000 22%);
+}
+
+/* ---------- Contents (web only) ---------- */
+.cs-aside { display: none; }
+@media (min-width: 1080px) {
+  .cs-aside { display: block; grid-area: aside; padding: 51px 0 0 50px; }
+  .cs-toc { position: sticky; top: 50px; }
+  .cs-toc ol { display: grid; gap: 16px; }
+  .cs-toc a {
+    --top: var(--ink-3);
+    --bot: var(--ink-3);
+    display: block;
+    font-size: 12px; line-height: 17px;
+    letter-spacing: -.01em;
+    color: var(--ink-3);
+  }
+  .cs-toc a[aria-current="true"] { color: var(--ink); }
+
+  /* The highlight moves with the section lines. While the next section's divider slides up
+     through the list, every item is painted in two colours split exactly at that line:
+     above it the current section is highlighted, below it the next one. So each item
+     changes the moment the line passes over it. js/case-study.js sets --cut (line y inside
+     the item) and data-top / data-bot (highlighted above / below the line). */
+  html.js-toc .cs-toc a {
+    background: linear-gradient(var(--top) var(--cut, 100%), var(--bot) var(--cut, 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .cs-toc a[data-top] { --top: var(--ink); }
+  .cs-toc a[data-bot] { --bot: var(--ink); }
+}
+@media (min-width: 1080px) and (hover: hover) {
+  .cs-toc a:not([aria-current="true"]):hover { color: var(--ink-2); }
+  .cs-toc a:not([data-top]):hover { --top: var(--ink-2); }
+  .cs-toc a:not([data-bot]):hover { --bot: var(--ink-2); }
+}

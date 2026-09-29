@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NOOK case study · Yuvraj Gupta</title>
+  <meta name="description" content="NOOK, an activity companion app for the moments you'd rather not spend alone. Case study by Yuvraj Gupta, Product Designer.">
+  <meta name="theme-color" content="#F2F2F2">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23222'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='%23F05C6D' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="Assets/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" type="image/webp" href="Assets/nook/sizes/cover-1428.webp" imagesrcset="Assets/nook/sizes/cover-720.webp 720w, Assets/nook/sizes/cover-1072.webp 1072w, Assets/nook/sizes/cover-1428.webp 1428w" imagesizes="(min-width: 768px) 714px, calc(100vw - 32px)">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/case-study.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="cs-page">
+  <a class="skip-link" href="#problem">Skip to content</a>
+
+  <!-- Card icons, drawn from the Figma file (Assets/nook/design/web.svg) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-question" viewBox="0 2.79 20 20"><rect x="3" y="5.79" width="14" height="14" rx="7" fill="currentColor"/><path d="M7.781 10.903C7.913 10.494 8.157 10.129 8.484 9.849C8.811 9.57 9.209 9.386 9.634 9.319C10.059 9.251 10.495 9.303 10.893 9.467C11.29 9.632 11.634 9.904 11.887 10.252C12.14 10.6 12.292 11.011 12.326 11.44C12.36 11.869 12.274 12.299 12.079 12.682C11.883 13.066 11.586 13.388 11.219 13.613C10.852 13.838 10.43 13.957 10 13.957V14.54M10.029 16.873V16.932L9.971 16.932V16.873H10.029Z" fill="none" stroke="#fff" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-quote20" viewBox="0 2.8 20 20"><path d="M5 16.95H7.498L9.164 13.62V8.62H4.167V13.62H6.665L5 16.95ZM11.663 16.95H14.162L15.828 13.62V8.62H10.83V13.62H13.329L11.663 16.95Z" fill="currentColor"/></symbol>
+    <symbol id="i-group" viewBox="0 2.75 20 20"><path d="M9.995 13.41C11.353 13.41 12.552 13.74 13.527 14.16C14.426 14.56 14.993 15.46 14.993 16.44V17.79H4.998V16.44C4.998 15.46 5.564 14.56 6.463 14.17C7.438 13.74 8.637 13.41 9.995 13.41ZM3.332 13.62C4.248 13.62 4.998 12.87 4.998 11.95C4.998 11.04 4.248 10.29 3.332 10.29C2.415 10.29 1.666 11.04 1.666 11.95C1.666 12.87 2.415 13.62 3.332 13.62ZM4.273 14.54C3.965 14.49 3.657 14.45 3.332 14.45C2.507 14.45 1.724 14.63 1.016 14.94C0.399 15.2-0.001 15.81 0 16.48V17.79H3.748V16.44C3.748 15.75 3.94 15.1 4.273 14.54ZM16.658 13.62C17.575 13.62 18.324 12.87 18.324 11.95C18.324 11.04 17.575 10.29 16.658 10.29C15.742 10.29 14.993 11.04 14.993 11.95C14.993 12.87 15.742 13.62 16.658 13.62ZM19.99 16.48C19.99 15.8 19.59 15.2 18.974 14.94C18.243 14.62 17.455 14.45 16.658 14.45C16.333 14.45 16.025 14.49 15.717 14.54C16.05 15.1 16.242 15.75 16.242 16.44V17.79H19.99V16.48ZM9.995 7.79C11.378 7.79 12.494 8.91 12.494 10.29C12.494 11.67 11.378 12.79 9.995 12.79C8.612 12.79 7.496 11.67 7.496 10.29C7.496 8.91 8.612 7.79 9.995 7.79Z" fill="currentColor"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><path d="M11.995 12.79C14.204 12.79 15.993 11 15.993 8.79C15.993 6.58 14.204 4.79 11.995 4.79C9.786 4.79 7.997 6.58 7.997 8.79C7.997 11 9.786 12.79 11.995 12.79ZM11.995 14.79C9.326 14.79 3.998 16.13 3.998 18.78V20.78H19.992V18.78C19.992 16.13 14.664 14.79 11.995 14.79Z" fill="currentColor"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21.707 3.29C21.979 3.56 22.071 3.97 21.944 4.33L15.36 23.14C14.912 24.42 13.126 24.5 12.574 23.25L9.904 17.25L17.368 8.34C17.759 7.87 17.131 7.24 16.663 7.63L7.753 15.1L1.746 12.43C0.505 11.87 0.578 10.09 1.86 9.64L20.67 3.06C21.032 2.93 21.435 3.02 21.707 3.29Z" fill="currentColor"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M11.995 5.5C6.997 5.5 2.729 8.61 1 13C2.729 17.39 6.997 20.5 11.995 20.5C16.993 20.5 21.261 17.39 22.99 13C21.261 8.61 16.993 5.5 11.995 5.5V5.5ZM11.995 18C9.236 18 6.997 15.76 6.997 13C6.997 10.24 9.236 8 11.995 8C14.754 8 16.993 10.24 16.993 13C16.993 15.76 14.754 18 11.995 18ZM11.995 10C10.336 10 8.996 11.34 8.996 13C8.996 14.66 10.336 16 11.995 16C13.654 16 14.994 14.66 14.994 13C14.994 11.34 13.654 10 11.995 10Z" fill="currentColor"/></symbol>
+    <symbol id="i-face" viewBox="0 0 24 24"><path d="M16.809 16.92C17.151 15.73 17.548 14.84 18.508 14.44C19.458 14.04 20.649 12.14 21.249 12.41C21.84 12.68 21.72 13.33 21.351 13.86C20.982 14.38 20.317 15.13 20.317 15.13L23.178 15.91C23.178 15.91 23.852 16.13 23.815 16.66C23.778 17.2 22.209 17.11 22.209 17.11C22.209 17.11 23.668 17.69 23.529 18.25C23.391 18.82 21.757 18.44 21.757 18.44C21.757 18.44 23.022 19.26 22.68 19.83C22.348 20.41 20.908 19.64 20.908 19.64C20.908 19.64 22.089 20.49 21.729 20.98C21.369 21.48 19.994 20.54 19.994 20.54C19.994 20.54 15.96 19.9 16.809 16.92ZM8.511 4.67C3.914 4.67 0.185 8.4 0.185 13C0.185 17.6 3.914 21.33 8.511 21.33C13.108 21.33 16.837 17.6 16.837 13C16.846 8.4 13.117 4.67 8.511 4.67ZM5.142 10.17C5.935 10.17 6.572 10.8 6.572 11.6C6.572 12.39 5.935 13.03 5.142 13.03C4.348 13.03 3.711 12.39 3.711 11.6C3.711 10.8 4.357 10.17 5.142 10.17ZM8.511 18.7C6.545 18.7 4.763 17.54 3.978 15.73L5.169 15.22C5.742 16.54 7.052 17.4 8.502 17.4C9.951 17.4 11.262 16.54 11.834 15.22L13.025 15.73C12.258 17.54 10.486 18.7 8.511 18.7ZM11.88 13.04C11.086 13.04 10.449 12.4 10.449 11.61C10.449 10.81 11.086 10.18 11.88 10.18C12.674 10.18 13.311 10.81 13.311 11.61C13.311 12.4 12.674 13.04 11.88 13.04Z" fill="currentColor"/></symbol>
+    <symbol id="i-bulb20" viewBox="0 3 20 20"><path d="M7.496 20.5C7.496 20.91 7.829 21.33 8.329 21.33H11.661C12.161 21.33 12.494 20.91 12.494 20.5V19.66H7.496V20.5ZM9.995 4.67C6.747 4.67 4.165 7.25 4.165 10.5C4.165 12.5 5.164 14.25 6.663 15.25V17.16C6.663 17.58 6.996 18 7.496 18H12.494C12.993 18 13.327 17.58 13.327 17.16V15.25C14.826 14.17 15.825 12.42 15.825 10.5C15.825 7.25 13.243 4.67 9.995 4.67V4.67Z" fill="currentColor"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9.501 20.5C9.501 20.91 9.834 21.33 10.334 21.33H13.666C14.166 21.33 14.499 20.91 14.499 20.5V19.66H9.501V20.5ZM12 4.67C8.752 4.67 6.17 7.25 6.17 10.5C6.17 12.5 7.169 14.25 8.668 15.25V17.16C8.668 17.58 9.002 18 9.501 18H14.499C14.999 18 15.332 17.58 15.332 17.16V15.25C16.831 14.17 17.83 12.42 17.83 10.5C17.83 7.25 15.248 4.67 12 4.67V4.67Z" fill="currentColor"/></symbol>
+    <symbol id="i-school" viewBox="0 0 24 24"><path d="M4.998 13.97V17.97L11.995 21.79L18.992 17.97V13.97L11.995 17.79L4.998 13.97ZM11.995 3.79L1 9.79L11.995 15.79L20.991 10.88V17.79H22.99V9.79L11.995 3.79Z" fill="currentColor"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M13.996 2.79H5.999C4.9 2.79 4.01 3.69 4.01 4.79L4 20.78C4 21.88 4.89 22.78 5.989 22.78H17.994C19.094 22.78 19.993 21.88 19.993 20.78V8.79L13.996 2.79ZM15.995 18.78H7.998V16.78H15.995V18.78ZM15.995 14.78H7.998V12.79H15.995V14.78ZM12.996 9.79V4.29L18.494 9.79H12.996Z" fill="currentColor"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M11.985 19.54L4.618 13.81L2.999 15.07L11.995 22.07L20.991 15.07L19.362 13.8L11.985 19.54ZM11.995 17L19.352 11.27L20.991 10L11.995 3L2.999 10L4.628 11.27L11.995 17Z" fill="currentColor"/></symbol>
+    <symbol id="i-article" viewBox="0 0 24 24"><path d="M18.992 4H4.998C3.898 4 2.999 4.9 2.999 6V20C2.999 21.1 3.898 22 4.998 22H18.992C20.092 22 20.991 21.1 20.991 20V6C20.991 4.9 20.092 4 18.992 4ZM13.994 18H6.997V16H13.994V18ZM16.993 14H6.997V12H16.993V14ZM16.993 10H6.997V8H16.993V10Z" fill="currentColor"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M5.997 17.8H8.996L10.995 13.8V7.8H4.998V13.8H7.997L5.997 17.8ZM13.994 17.8H16.993L18.992 13.8V7.8H12.995V13.8H15.993L13.994 17.8Z" fill="currentColor"/></symbol>
+  </svg>
+
+  <main class="cs">
+    <!-- ============ INTRO ============ -->
+    <header class="cs-intro">
+      <div class="cs-id">
+        <img src="Assets/icons/nook-app-icon.svg" alt="NOOK app icon" width="70" height="70">
+        <div>
+          <p class="cs-name">NOOK</p>
+          <p class="cs-kind">Activity Companion App</p>
+        </div>
+      </div>
+
+      <h1 class="cs-title">A small app for the moments you'd rather not spend alone.</h1>
+
+      <article class="cs-card">
+        <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>Quick question</h3>
+        <p>When was the last time you actually spent a holiday with someone? Not texting. Not a video call. Just being around a person, doing something together.</p>
+        <p>If you had to think about it, you're not alone. I had to think too.</p>
+      </article>
+
+      <figure class="cs-art">
+        <img src="Assets/nook/sizes/cover-1428.webp" srcset="Assets/nook/sizes/cover-720.webp 720w, Assets/nook/sizes/cover-1072.webp 1072w, Assets/nook/sizes/cover-1428.webp 1428w" sizes="(min-width: 768px) 714px, calc(100vw - 32px)" alt="Illustration: a boy lying in bed with his phone on a sunny day, while outside his window people play badminton in the park" width="1428" height="810" fetchpriority="high" decoding="async">
+      </figure>
+
+      <div class="cs-facts">
+        <dl>
+          <div><dt>Designation</dt><dd>Product Designer</dd></div>
+          <div><dt>Duration</dt><dd>1 Month Sprint</dd></div>
+          <div><dt>Screens</dt><dd>30+ High Fidelity</dd></div>
+          <div><dt>User Flows</dt><dd>3 Complete</dd></div>
+        </dl>
+        <p class="cs-tools-label">My Toolkit</p>
+        <ul class="cs-tools">
+          <li><img src="Assets/icons/tools/sizes/figma-132.webp" alt="Figma" title="Figma" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/claude-code-132.webp" alt="Claude Code" title="Claude Code" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/claude-132.webp" alt="Claude" title="Claude" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/gemini-132.webp" alt="Gemini" title="Gemini" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/stitch-132.webp" alt="Stitch" title="Stitch" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/linear-132.webp" alt="Linear" title="Linear" width="44" height="44"></li>
+        </ul>
+        <img class="cs-post" src="Assets/nook/sizes/post-card-621.webp" loading="lazy" decoding="async">
+      </div>
+    </header>
+
+    <div class="cs-body">
+      <!-- ============ THE PROBLEM ============ -->
+      <section class="cs-sec" id="problem" aria-labelledby="problem-title">
+        <h2 class="cs-h2 reveal" id="problem-title">The Problem</h2>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-quote20"/></svg>My Saturdays</h3>
+          <p>When I started working, my friends were in different towns. Weekdays kept me busy. Weekends were the problem.</p>
+          <p>Saturday would come and I'd be in my room, scrolling. Reels, feeds, repeat. By evening the day was gone and I couldn't remember a single moment from it.</p>
+          <p>One evening I stepped out for a walk around my neighborhood. There was a girl playing badminton alone, hitting the shuttle against a wall.</p>
+          <p>The problem isn't that there are no people nearby. It's that there's no simple way to find someone for a quick game, a walk or a jog.</p>
+        </article>
+
+        <article class="cs-card has-char reveal" data-gap="24" style="--cw:82;--rise:70">
+          <img class="cs-char" src="Assets/mascots/sizes/mascot-peek-123.webp" alt="" width="123" height="123" loading="lazy" decoding="async">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-group"/></svg>Maybe this is you too</h3>
+          <ul class="cs-dots">
+            <li>People who moved to a new city for a job. Everyone around you is busy, and your friends are far away from you.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ============ OVERVIEW ============ -->
+      <section class="cs-sec" id="overview" aria-labelledby="overview-title">
+        <h2 class="cs-h2 reveal" id="overview-title">So I designed Nook</h2>
+        <p class="cs-lead reveal">Nook is an activity companion app that connects you with people nearby who want to do the same thing, at the same time.</p>
+
+        <table class="cs-table reveal">
+          <thead><tr><th scope="col">Must Have</th><th scope="col">Why</th></tr></thead>
+          <tbody>
+            <tr><td>Post an activity in a few taps</td><td>Going from bored to playing should be quicker than opening Instagram.</td></tr>
+            <tr><td>Request &amp; accepts</td><td>No random DMs. You only talk to people you've agreed to meet.</td></tr>
+            <tr><td>Activity based explore</td><td>Nobody can browse or track peoples.</td></tr>
+            <tr><td>Authenticity of a person</td><td>Phone OTP + Video verification</td></tr>
+            <tr><td>Report &amp; Remove</td><td>A way out at any moment.</td></tr>
+          </tbody>
+        </table>
+
+        <article class="cs-card cs-card--dark has-char reveal" style="--cw:82;--rise:63">
+          <img class="cs-char" src="Assets/mascots/sizes/mascot-sleep-123.webp" alt="" width="123" height="123" loading="lazy" decoding="async">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-person"/></svg>My Role</h3>
+          <p>Sole designer, from idea to prototype. No brief, no client, no team. Just a Saturday evening, a question I couldn't shake off, and a blank Figma file.</p>
+          <p>I defined the problem, planned the flows, designed the UI, mapped the edge cases and wrote notes for whoever builds it. Every decision here was mine, including the ones I'm still not sure about.</p>
+        </article>
+      </section>
+
+      <!-- ============ RESEARCH ============ -->
+      <section class="cs-sec" id="research" aria-labelledby="research-title">
+        <h2 class="cs-h2 reveal" id="research-title">Research and Early Thinking</h2>
+        <div class="cs-qs reveal">
+          <p>Questions I started with</p>
+          <ul class="cs-dots">
+            <li>What's the least I'd need to share and still be free to join or leave?</li>
+            <li>How do you find someone nearby without anyone finding you?</li>
+            <li>What makes you say yes to a plan with someone new?</li>
+          </ul>
+        </div>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Share less, leave freely</h3>
+          <ul class="cs-dots">
+            <li>No phone numbers, ever shared. You talk only in the app, like Uber keeps numbers hidden.</li>
+            <li>Leave any activity quietly, no reason needed, like leaving a Instagram group silently.</li>
+          </ul>
+        </article>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-face"/></svg>Trust without a face</h3>
+          <ul class="cs-dots">
+            <li>After a meetup, only friendly tags like "best humor" or "Fun to play with", no star ratings.</li>
+            <li>Every plan comes with a live photo of the spot or activity, taken right then. No gallery uploads, so what you see is what's happening.</li>
+          </ul>
+        </article>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>Reveal only after a yes</h3>
+          <ul class="cs-dots">
+            <li>Activities never reveal your home, but showing how far from you.</li>
+            <li>Gone when it's over, an activity and its chats disappear once it ends.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-art reveal">
+          <img src="Assets/nook/sizes/research-1428.webp" srcset="Assets/nook/sizes/research-720.webp 720w, Assets/nook/sizes/research-1072.webp 1072w, Assets/nook/sizes/research-1428.webp 1428w" sizes="(min-width: 768px) 714px, calc(100vw - 32px)" alt="Illustration: a boy looking at his phone, imagining joining a badminton game in the park, meeting new people and playing together" width="1428" height="810" loading="lazy" decoding="async">
+        </figure>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-bulb20"/></svg>Insights</h3>
+          <ul class="cs-dots">
+            <li>In this phase focus on ships around these three features.
+              <ol class="cs-abc">
+                <li>Freedom/control</li>
+                <li>Privacy</li>
+                <li>Trust</li>
+              </ol>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ============ ONBOARDING ============ -->
+      <section class="cs-sec" id="onboarding" aria-labelledby="onboarding-title">
+        <h2 class="cs-h2 reveal" id="onboarding-title">Onboarding Flow</h2>
+        <p class="cs-lead reveal">Onboarding had a tricky job: prove you're a real person while asking for as little as possible. Nothing else is needed to get started, and permissions are asked only when a feature needs them.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>Insights</h3>
+          <ul class="cs-dots">
+            <li>Two quick steps felt lighter than any profile setup. Users were exploring plans before they had time to second guess. Preferences are asked in the moment, while browsing or searching, so every question has a clear reason.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-shots reveal" aria-label="Onboarding screens: profile with phone number and Google sign in, OTP check, and a short video verification">
+          <img style="--x:16;--y:16" src="Assets/nook/screens/sizes/onboarding-profile-432.webp" srcset="Assets/nook/screens/sizes/onboarding-profile-216.webp 216w, Assets/nook/screens/sizes/onboarding-profile-324.webp 324w, Assets/nook/screens/sizes/onboarding-profile-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Profile step: name, phone number, age confirmation and Continue with Google" width="432" height="939" loading="lazy" decoding="async">
+          <img class="lift" style="--x:249;--y:-24" src="Assets/nook/screens/sizes/onboarding-otp-432.webp" srcset="Assets/nook/screens/sizes/onboarding-otp-216.webp 216w, Assets/nook/screens/sizes/onboarding-otp-324.webp 324w, Assets/nook/screens/sizes/onboarding-otp-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="OTP sheet: code sent to the phone number, resend timer" width="432" height="939" loading="lazy" decoding="async">
+          <img class="lift" style="--x:481;--y:16" src="Assets/nook/screens/sizes/onboarding-verify-432.webp" srcset="Assets/nook/screens/sizes/onboarding-verify-216.webp 216w, Assets/nook/screens/sizes/onboarding-verify-324.webp 324w, Assets/nook/screens/sizes/onboarding-verify-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Verify step: selfie video with a line to read aloud in Hinglish" width="432" height="938" loading="lazy" decoding="async">
+        </figure>
+      </section>
+
+      <!-- ============ DISCOVERY ============ -->
+      <section class="cs-sec" id="discovery" aria-labelledby="discovery-title">
+        <h2 class="cs-h2 reveal" id="discovery-title">Discovery Exploration</h2>
+        <p class="cs-lead reveal">Anyone who opens Nook already has something in mind. A walk, a run, a game. They're just looking for a partner for that one thing. So instead of dropping them into a feed to scroll, the first screen asks them to start with their own plan, and shows that others nearby are around to join. Exploring and joining are always one tap away, but the first move is theirs.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>What I found</h3>
+          <ul class="cs-dots">
+            <li>Nobody wants to be the first one in an empty room. People act when they sense others are around, even if they can't see them yet.</li>
+            <li>Strangers feel safer in small numbers. A first meet feels easier with one or two people than a crowd.</li>
+            <li>Proof beats promises. Seeing the place or activity as it is right now builds more trust than any description.</li>
+            <li>People copy what they see. When others post simple plans, new users feel it's okay to post one too.</li>
+          </ul>
+        </article>
+
+        <table class="cs-table reveal">
+          <thead><tr><th scope="col">Insight</th><th scope="col">In the design</th></tr></thead>
+          <tbody>
+            <tr><td>Empty room</td><td>First screen shows how many people are nearby and online, with a plan ready to post</td></tr>
+            <tr><td>Live plans around you</td><td>shows the activity, place, the host's short message and an emoji of how past meetups felt.</td></tr>
+            <tr><td>Join with a note</td><td>a quick intro to the host, so the first hello happens before the meet.</td></tr>
+            <tr><td>Proof beats promises</td><td>Plans need at least one live snap, camera only, no gallery</td></tr>
+            <tr><td>Host your own</td><td>post your plan with its place and live snaps of the spot.</td></tr>
+            <tr><td>Clear status</td><td>a plan shows "Full" once the group is complete, and a countdown when it's about to end.</td></tr>
+          </tbody>
+        </table>
+
+        <figure class="cs-shots reveal" aria-label="Discovery screens: the plan feed, the empty home with a quick post, and posting a plan with venue and live snaps">
+          <img style="--x:16;--y:16" src="Assets/nook/screens/sizes/discovery-feed-432.webp" srcset="Assets/nook/screens/sizes/discovery-feed-216.webp 216w, Assets/nook/screens/sizes/discovery-feed-324.webp 324w, Assets/nook/screens/sizes/discovery-feed-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Discovery feed with nearby plans like a dog walk and a morning run" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:249;--y:-44.94" src="Assets/nook/screens/sizes/discovery-home-432.webp" srcset="Assets/nook/screens/sizes/discovery-home-216.webp 216w, Assets/nook/screens/sizes/discovery-home-324.webp 324w, Assets/nook/screens/sizes/discovery-home-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Home screen asking what activity you have in mind, with a quick post card and people online nearby" width="432" height="939" loading="lazy" decoding="async">
+          <img class="lift" style="--x:481;--y:16" src="Assets/nook/screens/sizes/discovery-create-post-432.webp" srcset="Assets/nook/screens/sizes/discovery-create-post-216.webp 216w, Assets/nook/screens/sizes/discovery-create-post-324.webp 324w, Assets/nook/screens/sizes/discovery-create-post-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Create a post: venue search, live snaps and hold to post" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <figure class="cs-shots reveal" aria-label="Plan cards with countdown and full status, and the activity and distance filters">
+          <img style="--x:115;--y:16" src="Assets/nook/screens/sizes/discovery-feed-status-432.webp" srcset="Assets/nook/screens/sizes/discovery-feed-status-216.webp 216w, Assets/nook/screens/sizes/discovery-feed-status-324.webp 324w, Assets/nook/screens/sizes/discovery-feed-status-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Feed cards showing a countdown and a Full tag" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:382;--y:16" src="Assets/nook/screens/sizes/discovery-filters-432.webp" srcset="Assets/nook/screens/sizes/discovery-filters-216.webp 216w, Assets/nook/screens/sizes/discovery-filters-324.webp 324w, Assets/nook/screens/sizes/discovery-filters-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Filters for distance, activity and sort order over the feed" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <article class="cs-card has-char reveal" style="--cw:99;--rise:66">
+          <img class="cs-char" src="Assets/mascots/sizes/mascot-reading-198.webp" alt="" width="198" height="164" loading="lazy" decoding="async">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg>Lessons</h3>
+          <ul class="cs-dots">
+            <li>Deciding what not to show was the hardest part. Every card had to answer "should I join?" in a glance, so I split information into what comes first and what can wait.</li>
+            <li>People choose better when they can compare. Cards moved from a plain scrolling list to a more interactive scroll that always shows at least two plans, so users can pick instead of settling.</li>
+            <li>An empty feed needed as much design as a full one. Planning for zero plans nearby shaped the first screen more than any card did.</li>
+            <li>Search and filters quietly teach the app. What people look for and filter by says more about their taste than any signup question could.</li>
+          </ul>
+        </article>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Future Updates</h3>
+          <ul class="cs-dots">
+            <li>A space for hosts. Right now a host posts a plan and it gets lost in the feed. A dedicated section will let them track requests, manage their plans and host more than one activity.</li>
+            <li>Test the first time experience. With real users, I want to see where they get stuck on their first post and first join, how long it takes, and how they expect the flow to work.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ============ CHATTING ============ -->
+      <section class="cs-sec" id="chatting" aria-labelledby="chatting-title">
+        <h2 class="cs-h2 reveal" id="chatting-title">Conversation glimpse</h2>
+        <p class="cs-lead reveal">Chat isn't here to make friends, it's here to make the plan happen. The screens stay familiar so nobody has to learn anything new. What changed is the structure: a request until the host says yes, a group chat after, and gone a day later.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>What I found</h3>
+          <ul class="cs-dots">
+            <li>A request thread felt safer than an open inbox. Hosts decide who joins before anyone can see the group or message them.</li>
+            <li>A landmark felt more familiar than a pin on a map. Newcomers find the spot faster, and nobody has to share their live location.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-shots reveal" aria-label="Chat screens: the chat list, picking a landmark on the map, and the host's view of a group chat">
+          <img style="--x:16;--y:16" src="Assets/nook/screens/sizes/chat-list-432.webp" srcset="Assets/nook/screens/sizes/chat-list-216.webp 216w, Assets/nook/screens/sizes/chat-list-324.webp 324w, Assets/nook/screens/sizes/chat-list-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Chats list with recent plan groups" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:249;--y:-53.98" src="Assets/nook/screens/sizes/chat-location-432.webp" srcset="Assets/nook/screens/sizes/chat-location-216.webp 216w, Assets/nook/screens/sizes/chat-location-324.webp 324w, Assets/nook/screens/sizes/chat-location-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Map sheet to pick a landmark like a temple or park" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:481;--y:16" src="Assets/nook/screens/sizes/chat-host-view-432.webp" srcset="Assets/nook/screens/sizes/chat-host-view-216.webp 216w, Assets/nook/screens/sizes/chat-host-view-324.webp 324w, Assets/nook/screens/sizes/chat-host-view-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Host view of a group chat with accept and reject for a new request" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <figure class="cs-shots reveal" aria-label="Host controls: removing members, and a chat that deletes itself when the plan ends">
+          <img style="--x:115;--y:16" src="Assets/nook/screens/sizes/chat-remove-members-432.webp" srcset="Assets/nook/screens/sizes/chat-remove-members-216.webp 216w, Assets/nook/screens/sizes/chat-remove-members-324.webp 324w, Assets/nook/screens/sizes/chat-remove-members-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Member list with a Remove button next to each person" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:382;--y:16" src="Assets/nook/screens/sizes/chat-ends-432.webp" srcset="Assets/nook/screens/sizes/chat-ends-216.webp 216w, Assets/nook/screens/sizes/chat-ends-324.webp 324w, Assets/nook/screens/sizes/chat-ends-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Group chat with a countdown banner before the chat is deleted" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <article class="cs-card has-char reveal" style="--cw:99;--rise:66">
+          <img class="cs-char" src="Assets/mascots/sizes/mascot-chat-198.webp" alt="" width="198" height="174" loading="lazy" decoding="async">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg>Lessons</h3>
+          <ul class="cs-dots">
+            <li>Edge cases took more thinking than the screens. Failed messages, suspicious messages and host controls shaped most decisions.</li>
+            <li>Hosts stay in control. Anyone can message the host, but only the host can let them into the group.</li>
+            <li>Chats need time to wrap up. A 5 to 10 minute buffer after the plan ends lets the group say bye before the chat closes.</li>
+          </ul>
+        </article>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Future Updates</h3>
+          <ul class="cs-dots">
+            <li>Separate spaces for hosting and joining, so each plan is easier to manage and track.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ============ ITERATIONS ============ -->
+      <section class="cs-sec" id="iterations" aria-labelledby="iterations-title">
+        <h2 class="cs-h2 reveal" id="iterations-title">Iterations &amp; Edge cases</h2>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Same plan, same rules</h3>
+          <ul class="cs-dots">
+            <li>The quick post on the first screen skipped the venue and live snaps that the full post asked for, so some plans were half done. Now both ask for the same details, and every plan is complete however it's posted.</li>
+            <li>The feed changed too. It used to be a long scroll with the host's name first and a distance slider always on top. Now each card starts with the activity, and you swipe up and down to compare two or three plans while the current one stays in focus. "Join" sends a request to the host, and distance and activity filters open from one icon only when you need them.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-shots reveal" aria-label="Old feed with the distance slider on top, next to the new feed and the filter panel">
+          <img style="--x:21;--y:15.02" src="Assets/nook/screens/sizes/iteration-feed-old-432.webp" srcset="Assets/nook/screens/sizes/iteration-feed-old-216.webp 216w, Assets/nook/screens/sizes/iteration-feed-old-324.webp 324w, Assets/nook/screens/sizes/iteration-feed-old-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Earlier feed: host name first and a distance slider always on top" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:249;--y:15.02" src="Assets/nook/screens/sizes/discovery-feed-432.webp" srcset="Assets/nook/screens/sizes/discovery-feed-216.webp 216w, Assets/nook/screens/sizes/discovery-feed-324.webp 324w, Assets/nook/screens/sizes/discovery-feed-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="New feed: each card starts with the activity" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:477;--y:15.02" src="Assets/nook/screens/sizes/iteration-filters-432.webp" srcset="Assets/nook/screens/sizes/iteration-filters-216.webp 216w, Assets/nook/screens/sizes/iteration-filters-324.webp 324w, Assets/nook/screens/sizes/iteration-filters-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Filter panel with distance, activity and sort options" width="432" height="458" loading="lazy" decoding="async">
+        </figure>
+
+        <figure class="cs-shots reveal" aria-label="Old quick post without venue and snaps, next to the new quick post that asks for both">
+          <img style="--x:115;--y:16" src="Assets/nook/screens/sizes/iteration-home-old-432.webp" srcset="Assets/nook/screens/sizes/iteration-home-old-216.webp 216w, Assets/nook/screens/sizes/iteration-home-old-324.webp 324w, Assets/nook/screens/sizes/iteration-home-old-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Earlier quick post on an empty home screen" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:382;--y:16" src="Assets/nook/screens/sizes/discovery-home-432.webp" srcset="Assets/nook/screens/sizes/discovery-home-216.webp 216w, Assets/nook/screens/sizes/discovery-home-324.webp 324w, Assets/nook/screens/sizes/discovery-home-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="New quick post with venue and snap" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Safety starts at signup</h3>
+          <ul class="cs-dots">
+            <li>Nook is about meeting strangers, so signup now has one checkbox: you confirm you're 18 or older and understand that misuse has consequences. One tap, not a terms page.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-shots reveal" aria-label="Signup before and after the age and conduct checkbox, and the OTP step">
+          <img style="--x:21;--y:15" src="Assets/nook/screens/sizes/onboarding-profile-old-432.webp" srcset="Assets/nook/screens/sizes/onboarding-profile-old-216.webp 216w, Assets/nook/screens/sizes/onboarding-profile-old-324.webp 324w, Assets/nook/screens/sizes/onboarding-profile-old-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Earlier profile step without the checkbox" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:249;--y:15" src="Assets/nook/screens/sizes/onboarding-profile-432.webp" srcset="Assets/nook/screens/sizes/onboarding-profile-216.webp 216w, Assets/nook/screens/sizes/onboarding-profile-324.webp 324w, Assets/nook/screens/sizes/onboarding-profile-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Profile step with the 18+ confirmation checkbox" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:477;--y:15" src="Assets/nook/screens/sizes/onboarding-otp-432.webp" srcset="Assets/nook/screens/sizes/onboarding-otp-216.webp 216w, Assets/nook/screens/sizes/onboarding-otp-324.webp 324w, Assets/nook/screens/sizes/onboarding-otp-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="OTP sheet" width="432" height="939" loading="lazy" decoding="async">
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-article"/></svg>What happens when things go wrong</h3>
+          <ul class="cs-dots">
+            <li>Nothing breaks the flow: an empty chat list points you straight to Discovery.</li>
+            <li>You stay in control: a failed message stays in place with a Retry button, you can report a group if the host removes you, and messages with suspicious words or links are stopped before they're sent.</li>
+          </ul>
+        </article>
+
+        <figure class="cs-shots reveal" aria-label="Empty chats pointing to Discovery, a failed message with Retry, and the removed-from-group and phishing warnings">
+          <img style="--x:21;--y:15.1" src="Assets/nook/screens/sizes/chat-empty-432.webp" srcset="Assets/nook/screens/sizes/chat-empty-216.webp 216w, Assets/nook/screens/sizes/chat-empty-324.webp 324w, Assets/nook/screens/sizes/chat-empty-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Empty chats: Explore Discovery" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:249;--y:15.1" src="Assets/nook/screens/sizes/chat-retry-432.webp" srcset="Assets/nook/screens/sizes/chat-retry-216.webp 216w, Assets/nook/screens/sizes/chat-retry-324.webp 324w, Assets/nook/screens/sizes/chat-retry-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Group chat with a failed message and a Retry button" width="432" height="939" loading="lazy" decoding="async">
+          <img style="--x:481;--y:21.1;--w:217" src="Assets/nook/screens/sizes/chat-warnings-432.webp" srcset="Assets/nook/screens/sizes/chat-warnings-216.webp 216w, Assets/nook/screens/sizes/chat-warnings-324.webp 324w, Assets/nook/screens/sizes/chat-warnings-432.webp 432w" sizes="(min-width: 768px) 216px, calc((100vw - 32px) * .3025)" alt="Sheets for being removed from a group with Report, and for a message blocked for phishing words" width="434" height="924" loading="lazy" decoding="async">
+        </figure>
+      </section>
+
+      <!-- ============ REFLECTION ============ -->
+      <section class="cs-sec cs-sec--last" id="reflection" aria-labelledby="reflection-title">
+        <h2 class="cs-h2 reveal" id="reflection-title">Reflection</h2>
+        <p class="cs-lead cs-lead--sm reveal">In a one month sprint, Nook went from a Saturday evening thought to 30+ screens and 3 complete flows. The biggest lesson was that trust isn't one feature. It came from many small choices: no faces, a short note, live snaps, and a host who says yes. I haven't tested it with real users yet, so my next step is to watch where people hesitate on their first post and their first join.</p>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-quote"/></svg>Perspective</h3>
+          <p>“Remember when a friend just knocked and asked, 'khelne chalega?' Nook brings that back, for grown-ups”</p>
+        </article>
+
+        <a class="btn cs-figma reveal" href="https://www.figma.com/design/DsJaprF436ir3BRRKmRwo9/Nook?node-id=66-5&amp;t=bqf6B9m6JjieWkl5-1" target="_blank" rel="noopener">View in Figma</a>
+        <a class="btn cs-home reveal" href="index.html#work">Back to portfolio</a>
+      </section>
+    </div>
+
+    <!-- ============ CONTENTS (web) ============ -->
+    <aside class="cs-aside">
+      <nav class="cs-toc" aria-label="On this page">
+        <ol>
+          <li><a href="#problem">The Problem</a></li>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#onboarding">Onboarding</a></li>
+          <li><a href="#discovery">Discovery</a></li>
+          <li><a href="#chatting">Chatting</a></li>
+          <li><a href="#iterations">Iterations</a></li>
+          <li><a href="#reflection">Reflection</a></li>
+        </ol>
+      </nav>
+    </aside>
+  </main>
+
+  <img class="cs-foot" src="Assets/nook/sizes/park-1440.webp" srcset="Assets/nook/sizes/park-800.webp 800w, Assets/nook/sizes/park-1440.webp 1440w, Assets/nook/sizes/park-2880.webp 2880w" sizes="100vw" alt="" width="2880" height="898" loading="lazy" decoding="async">
+
+  <script src="js/case-study.js" defer></script>
+</body>
+</html>
