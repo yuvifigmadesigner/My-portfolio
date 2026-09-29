@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Art of Better Decisions · Yuvraj Gupta</title>
+  <meta name="description" content="Interface redesigns of mobile apps and web dashboards, each with what was breaking, what changed and the thinking behind it. By Yuvraj Gupta, Product Designer.">
+  <meta name="theme-color" content="#F2F2F2">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23222'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='%23F05C6D' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="Assets/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" type="image/webp" href="Assets/decisions/teaser/poster.webp">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/case-study.css">
+  <link rel="stylesheet" href="css/decisions.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="cs-page bd-page">
+  <a class="skip-link" href="#screener">Skip to content</a>
+
+  <!-- Card icons, the same ones as the NOOK case study -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-question" viewBox="0 2.79 20 20"><rect x="3" y="5.79" width="14" height="14" rx="7" fill="currentColor"/><path d="M7.781 10.903C7.913 10.494 8.157 10.129 8.484 9.849C8.811 9.57 9.209 9.386 9.634 9.319C10.059 9.251 10.495 9.303 10.893 9.467C11.29 9.632 11.634 9.904 11.887 10.252C12.14 10.6 12.292 11.011 12.326 11.44C12.36 11.869 12.274 12.299 12.079 12.682C11.883 13.066 11.586 13.388 11.219 13.613C10.852 13.838 10.43 13.957 10 13.957V14.54M10.029 16.873V16.932L9.971 16.932V16.873H10.029Z" fill="none" stroke="#fff" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21.707 3.29C21.979 3.56 22.071 3.97 21.944 4.33L15.36 23.14C14.912 24.42 13.126 24.5 12.574 23.25L9.904 17.25L17.368 8.34C17.759 7.87 17.131 7.24 16.663 7.63L7.753 15.1L1.746 12.43C0.505 11.87 0.578 10.09 1.86 9.64L20.67 3.06C21.032 2.93 21.435 3.02 21.707 3.29Z" fill="currentColor"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9.501 20.5C9.501 20.91 9.834 21.33 10.334 21.33H13.666C14.166 21.33 14.499 20.91 14.499 20.5V19.66H9.501V20.5ZM12 4.67C8.752 4.67 6.17 7.25 6.17 10.5C6.17 12.5 7.169 14.25 8.668 15.25V17.16C8.668 17.58 9.002 18 9.501 18H14.499C14.999 18 15.332 17.58 15.332 17.16V15.25C16.831 14.17 17.83 12.42 17.83 10.5C17.83 7.25 15.248 4.67 12 4.67V4.67Z" fill="currentColor"/></symbol>
+  </svg>
+
+  <main class="cs">
+    <!-- ============ INTRO ============ -->
+    <header class="cs-intro">
+      <h1 class="cs-title">The Art of Better Decisions</h1>
+
+      <p class="cs-lead">Each study here traces what was breaking, what changed, and the thinking behind it. Move across a picture, or drag it on your phone, to compare the original screen with the redesign.</p>
+
+      <!-- Teaser: made by tools/teaser/make-teaser.mjs from the before/after screens -->
+      <figure class="cs-art bd-cover">
+        <video autoplay muted loop playsinline preload="auto" poster="Assets/decisions/teaser/poster.webp" width="1428" height="810" aria-label="Teaser: the six studies glide through a line that turns each original screen into its redesign">
+          <source src="Assets/decisions/teaser/teaser-1428.mp4" type="video/mp4" media="(min-width: 768px)">
+          <source src="Assets/decisions/teaser/teaser-952.mp4" type="video/mp4">
+        </video>
+      </figure>
+
+      <div class="cs-facts">
+        <dl>
+          <div><dt>Designation</dt><dd>Product Designer</dd></div>
+          <div><dt>Platforms</dt><dd>Mobile &amp; Web</dd></div>
+        </dl>
+        <p class="cs-tools-label">My Toolkit</p>
+        <ul class="cs-tools">
+          <li><img src="Assets/icons/tools/sizes/figma-132.webp" alt="Figma" title="Figma" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/claude-132.webp" alt="Claude" title="Claude" width="44" height="44"></li>
+          <li><img src="Assets/icons/tools/sizes/stitch-132.webp" alt="Stitch" title="Stitch" width="44" height="44"></li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="cs-body">
+      <!-- ============ SCREENER AI ============ -->
+      <section class="cs-sec" id="screener" aria-labelledby="screener-title">
+        <p class="bd-cat reveal">Mobile App</p>
+        <h2 class="cs-h2 reveal" id="screener-title">Screener AI</h2>
+        <p class="cs-lead reveal">It is a great source for getting financial data reported by companies along with transcripts, quarter results and more.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Improve the interface of this AI chat window so as to improve readability and usability and also add dynamism, especially when compared to market leaders such as ChatGPT and Perplexity.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--phone reveal">
+          <div class="cmp" style="--ar:0.4613" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="Screener AI: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/screener-after-640.webp" srcset="Assets/decisions/sizes/screener-after-320.webp 320w, Assets/decisions/sizes/screener-after-640.webp 640w, Assets/decisions/sizes/screener-after-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Redesign: Screener AI" width="1179" height="2556" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/screener-before-640.webp" srcset="Assets/decisions/sizes/screener-before-320.webp 320w, Assets/decisions/sizes/screener-before-640.webp 640w, Assets/decisions/sizes/screener-before-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Original: Screener AI" width="1080" height="2400" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign converts a flat Q&amp;A into a structured financial tool by adding data headers, chunking text, and suggesting follow-up queries.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Value before the ask. Breaking the answer into headers and short blocks lets people see what the AI is worth in the first scan, so the &quot;Buy Credits&quot; upgrade shows up once trust is earned and feels like the next step, not a paywall.</p>
+        </article>
+
+
+      </section>
+
+      <!-- ============ MUSIC STREAMING ============ -->
+      <section class="cs-sec" id="music" aria-labelledby="music-title">
+        <p class="bd-cat reveal">Mobile App</p>
+        <h2 class="cs-h2 reveal" id="music-title">Music Streaming</h2>
+        <p class="cs-lead reveal">Modernizing player controls for gesture navigation.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Improve the design of this Now Playing screen, so as to add more energy and vibrancy to it. The goal is to make the design more expressive to match the emotive nature of music listening.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--phone reveal">
+          <div class="cmp" style="--ar:0.4654" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="Music Streaming: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/music-after-640.webp" srcset="Assets/decisions/sizes/music-after-320.webp 320w, Assets/decisions/sizes/music-after-640.webp 640w, Assets/decisions/sizes/music-after-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Redesign: Music Streaming" width="1170" height="2514" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/music-before-640.webp" srcset="Assets/decisions/sizes/music-before-320.webp 320w, Assets/decisions/sizes/music-before-640.webp 640w, Assets/decisions/sizes/music-before-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Original: Music Streaming" width="1080" height="2400" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign swaps static square art for a dynamic &quot;vinyl&quot; disk, adds a vibrant glow, and consolidates playback controls into a clean bottom dock.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Design for how listening feels, not just the controls. An expressive Now Playing screen builds an emotional connection, and because people find pleasing interfaces easier to use, play, skip and queue feel effortless.</p>
+        </article>
+
+
+      </section>
+
+      <!-- ============ ULAA BROWSER ============ -->
+      <section class="cs-sec" id="ulaa" aria-labelledby="ulaa-title">
+        <p class="bd-cat reveal">Web Browser</p>
+        <h2 class="cs-h2 reveal" id="ulaa-title">Ulaa Browser</h2>
+        <p class="cs-lead reveal">Ulaa is a Web browser from Zoho. While it was launched a couple of years back, it has recently been in the news. The Indian government is trying to promote homegrown software and apps and Ulaa is one of them.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Improve this screen to make it interesting for a user who is used to other popular browsers.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--dark reveal">
+          <div class="cmp" style="--ar:1.5385" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="Ulaa Browser: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/ulaa-after-1280.webp" srcset="Assets/decisions/sizes/ulaa-after-640.webp 640w, Assets/decisions/sizes/ulaa-after-1280.webp 1280w, Assets/decisions/sizes/ulaa-after-1920.webp 1920w" sizes="(min-width: 768px) 650px, calc(100vw - 64px)" alt="Redesign: Ulaa Browser" width="2560" height="1664" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/ulaa-before-1280.webp" srcset="Assets/decisions/sizes/ulaa-before-640.webp 640w, Assets/decisions/sizes/ulaa-before-1280.webp 1280w, Assets/decisions/sizes/ulaa-before-1920.webp 1920w" sizes="(min-width: 768px) 650px, calc(100vw - 64px)" alt="Original: Ulaa Browser" width="1920" height="1080" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign shifts from a fragmented dashboard to a sleek, centralized hub by adding a sidebar for mode switching and a prominent clock/search focus.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Organise around what people come to do. Bookmarks, history and modes live in one predictable place, so nothing has to be hunted for, and a start page focused on search and time lets someone new feel at home without learning a new browser.</p>
+        </article>
+
+
+      </section>
+
+      <!-- ============ HDFC PAYZAPP ============ -->
+      <section class="cs-sec" id="payzapp" aria-labelledby="payzapp-title">
+        <p class="bd-cat reveal">Mobile App</p>
+        <h2 class="cs-h2 reveal" id="payzapp-title">HDFC PayZapp</h2>
+        <p class="cs-lead reveal">PayZapp is a fintech product from HDFC Bank to help you make Credit card payments, UPI Payments, Shop, and other such activities.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Improve this screen to make it easy for a user to understand the savings they will get and make the buying process easier like easy selection of card and voucher denomination.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--phone reveal">
+          <div class="cmp" style="--ar:0.4632" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="HDFC PayZapp: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/payzapp-after-640.webp" srcset="Assets/decisions/sizes/payzapp-after-320.webp 320w, Assets/decisions/sizes/payzapp-after-640.webp 640w, Assets/decisions/sizes/payzapp-after-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Redesign: HDFC PayZapp" width="1188" height="2565" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/payzapp-before-640.webp" srcset="Assets/decisions/sizes/payzapp-before-320.webp 320w, Assets/decisions/sizes/payzapp-before-640.webp 640w, Assets/decisions/sizes/payzapp-before-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Original: HDFC PayZapp" width="1080" height="2400" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign uses a clear gift card motif and a 3-step guide to simplify redemption while highlighting the dual reward options for better clarity.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Lead with what the user gains. Putting the savings first makes the reward the reason to act, and showing the steps to redeem up front removes the doubt that stalls a purchase, so buying feels quick and safe.</p>
+        </article>
+
+
+      </section>
+
+      <!-- ============ URBAN COMPANY ============ -->
+      <section class="cs-sec" id="urban-company" aria-labelledby="urban-company-title">
+        <p class="bd-cat reveal">Mobile App</p>
+        <h2 class="cs-h2 reveal" id="urban-company-title">Urban Company</h2>
+        <p class="cs-lead reveal">Urban Company is a popular service provider for home maintenance needs, offering services such as plumbing, electrical, and cleaning.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Redesign this screen to make it easier for users to determine the number of hours they want the maid to work. Also consider other factors that one needs to consider besides time.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--phone reveal">
+          <div class="cmp" style="--ar:0.4493" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="Urban Company: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/urban-company-after-640.webp" srcset="Assets/decisions/sizes/urban-company-after-320.webp 320w, Assets/decisions/sizes/urban-company-after-640.webp 640w, Assets/decisions/sizes/urban-company-after-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Redesign: Urban Company" width="1236" height="2751" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/urban-company-before-640.webp" srcset="Assets/decisions/sizes/urban-company-before-320.webp 320w, Assets/decisions/sizes/urban-company-before-640.webp 640w, Assets/decisions/sizes/urban-company-before-960.webp 960w" sizes="(min-width: 768px) 280px, 240px" alt="Original: Urban Company" width="1080" height="2400" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign replaces generic service cards with a customizable booking engine that allows users to toggle home size, crew size, and specific tasks.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Let people describe their need instead of guessing a package. Choosing home size, crew and tasks puts them in control, and a price that updates with every choice sets clear expectations before they book.</p>
+        </article>
+
+
+      </section>
+
+      <!-- ============ HTML TO DESIGN ============ -->
+      <section class="cs-sec cs-sec--last" id="html-to-design" aria-labelledby="html-to-design-title">
+        <p class="bd-cat reveal">Web Dashboard</p>
+        <h2 class="cs-h2 reveal" id="html-to-design-title">HTML to design</h2>
+        <p class="cs-lead reveal">html.to.design is a popular Chrome extension, that can convert any website into Figma frames.</p>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic ic--20" aria-hidden="true"><use href="#i-question"/></svg>The Challenge</h3>
+          <p>Redesign this screen to make it intuitive for first-time users. You may add, remove or edit the features shown here. Also, improve the overall design quality of this screen.</p>
+        </article>
+
+        <figure class="bd-shot bd-shot--phone reveal">
+          <div class="cmp" style="--ar:0.6667" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Redesign" aria-label="HTML to design: compare the original screen with the redesign">
+            <img src="Assets/decisions/sizes/html-to-design-after-800.webp" srcset="Assets/decisions/sizes/html-to-design-after-400.webp 400w, Assets/decisions/sizes/html-to-design-after-800.webp 800w, Assets/decisions/sizes/html-to-design-after-1200.webp 1200w" sizes="(min-width: 768px) 400px, calc(100vw - 64px)" alt="Redesign: HTML to design" width="1200" height="1800" loading="lazy" decoding="async">
+            <div class="cmp-before">
+              <img src="Assets/decisions/sizes/html-to-design-before-507.webp" srcset="Assets/decisions/sizes/html-to-design-before-400.webp 400w, Assets/decisions/sizes/html-to-design-before-507.webp 507w" sizes="(min-width: 768px) 400px, calc(100vw - 64px)" alt="Original: HTML to design" width="507" height="725" loading="lazy" decoding="async">
+            </div>
+            <span class="cmp-handle" aria-hidden="true"><span class="cmp-grip"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+          </div>
+        </figure>
+
+        <article class="cs-card reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>The Solution</h3>
+          <p>The redesign simplifies complex checkbox lists into clean segmented controls and a single primary CTA, reducing choice paralysis.</p>
+        </article>
+
+        <article class="cs-card cs-card--dark reveal">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Key Strategic Decision</h3>
+          <p>Fewer choices, faster start. Every extra option slows a first-time user down, so the flow asks only what matters, in a clear order, and ends in one obvious action.</p>
+        </article>
+
+
+
+        <a class="btn cs-figma reveal" href="https://www.figma.com/design/VnruaOkSsmt4yLdjdghh8s/UXHack-Redesign-challenge?node-id=444-87&amp;t=9OjiI7YROvFm4hH5-1" target="_blank" rel="noopener">View in Figma</a>
+        <a class="btn cs-home reveal" href="index.html#work">Back to portfolio</a>
+      </section>
+    </div>
+
+    <!-- ============ CONTENTS (web) ============ -->
+    <aside class="cs-aside">
+      <nav class="cs-toc" aria-label="On this page">
+        <ol>
+          <li><a href="#screener">Screener AI</a></li>
+          <li><a href="#music">Music Streaming</a></li>
+          <li><a href="#ulaa">Ulaa Browser</a></li>
+          <li><a href="#payzapp">HDFC PayZapp</a></li>
+          <li><a href="#urban-company">Urban Company</a></li>
+          <li><a href="#html-to-design">HTML to design</a></li>
+        </ol>
+      </nav>
+    </aside>
+  </main>
+
+  <script src="js/case-study.js" defer></script>
+  <script src="js/decisions.js" defer></script>
+</body>
+</html>

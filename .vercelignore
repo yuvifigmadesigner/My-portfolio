@@ -5,6 +5,7 @@ Assets/nook/design/
 Assets/footer/crowd-people/
 Assets/footer/crowd-lottie.tsx
 Assets/unused/
+Assets/decisions/design/
 
 # Full-size originals: the pages load the small copies in each sizes/ folder
 Assets/about/*.webp
@@ -12,6 +13,7 @@ Assets/work/*.webp
 Assets/nook/*.webp
 Assets/nook/screens/*.webp
 Assets/icons/tools/*.webp
+Assets/decisions/*.webp
 
 # Notes and tools for editing, not for visitors
 /Assets/README.md

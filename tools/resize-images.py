@@ -35,6 +35,13 @@ JOBS = [
     ('Assets/mascots/mascot-chat.webp',    [None], 85),
     ('Assets/mascots/mascot-reading.webp', [None], 85),
     ('Assets/icons/tools/*.webp',          [132], 85),
+    # The Art of Better Decisions: before/after screens
+    ('Assets/decisions/screener-*.webp',        [320, 640, 960], 82),
+    ('Assets/decisions/music-*.webp',           [320, 640, 960], 82),
+    ('Assets/decisions/payzapp-*.webp',         [320, 640, 960], 82),
+    ('Assets/decisions/urban-company-*.webp',   [320, 640, 960], 82),
+    ('Assets/decisions/ulaa-*.webp',            [640, 1280, 1920], 82),
+    ('Assets/decisions/html-to-design-*.webp',  [400, 800, 1200], 82),
 ]
 
 
@@ -44,10 +51,11 @@ def build(src, widths, quality, force):
     out_dir = os.path.join(folder, 'sizes')
     os.makedirs(out_dir, exist_ok=True)
     image = None
+    with Image.open(src) as probe:
+        native = probe.size[0]
+    # never upscale: a width past the original becomes the original width
+    widths = sorted({native if w is None else min(w, native) for w in widths})
     for width in widths:
-        if width is None:
-            with Image.open(src) as probe:
-                width = probe.size[0]
         out = os.path.join(out_dir, f'{stem}-{width}.webp')
         if not force and os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(src):
             continue

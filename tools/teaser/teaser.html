@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Better Decisions teaser renderer</title>
+<!-- Draws the cover video for better-decisions.html frame by frame and encodes it as an
+     H.264 MP4 with the browser's own encoder. Run it with: node tools/teaser/make-teaser.mjs
+     Open this page in a browser to watch a live preview. -->
+<style>
+  @font-face {
+    font-family: "Plus Jakarta Sans";
+    src: url("../../Assets/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2") format("woff2");
+    font-weight: 200 800;
+    font-display: block;
+  }
+  body { margin: 0; padding: 24px; background: #F2F2F2; font: 14px "Plus Jakarta Sans", sans-serif; }
+  canvas { display: block; width: 714px; max-width: 100%; border-radius: 8px; background: #fff; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+
+/* ---------- The story ----------
+   The six studies ride a half circle, like a dial: they rise in small from the bottom
+   left, pass over the top and sink out at the bottom right. The one reaching the top
+   zooms up to full size and turns into a compare slider: it arrives as the original
+   screen, the handle sweeps across it and leaves the redesign behind, then the dial
+   flicks on to the next study. Every flick pulls back a touch, swings forward and
+   settles (ease in-out back). Loops seamlessly. */
+
+// Frame in design px (the NOOK cover frame, 714 × 405); rendered at any scale
+const FRAME_W = 714;
+const FRAME_H = 405;
+const TOP_Y = 190;     // centre of the screen at the top of the dial
+const RADIUS = 320;    // of the dial; its centre sits below the frame
+const STEP_DEG = 56;   // angle between two screens on the dial
+const SIDE_SCALE = .66; // screens one step away from the top
+const ARRIVE_SCALE = .82; // size a screen reaches the top at, before it zooms up to full size
+const BACK = 1.2;      // how far a flick pulls back and overshoots (1.70158 is the classic back ease)
+const POP = 1.4;       // overshoot of the zoom (ease out back)
+
+// One study, in seconds: it zooms up, the handle fades in and sweeps across, the redesign
+// rests, the dial flicks on
+const ZOOM = .4;
+const ARRIVE = .15;
+const SWEEP = .9;
+const SHOW = .3;
+const FLICK = .9;
+const STEP = ZOOM + ARRIVE + SWEEP + SHOW + FLICK;
+// start mid-sweep, so the first frame (the poster) shows both halves
+const START = ZOOM + ARRIVE + SWEEP / 2;
+
+const ITEMS = [
+  { slug: 'screener', h: 250, after: 'sizes/screener-after-640', before: 'sizes/screener-before-640', fit: 'cover' },
+  { slug: 'music', h: 250, after: 'sizes/music-after-640', before: 'sizes/music-before-640', fit: 'cover' },
+  { slug: 'ulaa', h: 176, after: 'sizes/ulaa-after-1280', before: 'sizes/ulaa-before-1280', fit: 'contain', well: '#18181B' },
+  { slug: 'payzapp', h: 250, after: 'sizes/payzapp-after-640', before: 'sizes/payzapp-before-640', fit: 'cover' },
+  { slug: 'urban-company', h: 250, after: 'sizes/urban-company-after-640', before: 'sizes/urban-company-before-640', fit: 'cover' },
+  { slug: 'html-to-design', h: 250, after: 'sizes/html-to-design-after-800', before: 'sizes/html-to-design-before-507', fit: 'cover' },
+];
+const DURATION = ITEMS.length * STEP;
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d', { alpha: false });
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Could not load ' + src));
+    img.src = src;
+  });
+}
+
+async function prepare() {
+  for (const it of ITEMS) {
+    [it.afterImg, it.beforeImg] = await Promise.all([
+      loadImage(`../../Assets/decisions/${it.after}.webp`),
+      loadImage(`../../Assets/decisions/${it.before}.webp`),
+    ]);
+    it.w = it.h * it.afterImg.naturalWidth / it.afterImg.naturalHeight;
+  }
+}
+
+// Ease in-out back: a small pull back before the move, a small overshoot before it settles
+function easeInOutBack(x) {
+  const c = BACK * 1.525;
+  return x < .5
+    ? (Math.pow(2 * x, 2) * ((c + 1) * 2 * x - c)) / 2
+    : (Math.pow(2 * x - 2, 2) * ((c + 1) * (2 * x - 2) + c) + 2) / 2;
+}
+const easeInOutSine = (x) => -(Math.cos(Math.PI * x) - 1) / 2;
+const easeOutBack = (x) => 1 + (POP + 1) * Math.pow(x - 1, 3) + POP * Math.pow(x - 1, 2);
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+
+// Where everything is at time t
+function stateAt(t) {
+  const time = (t + START) % DURATION;
+  const i = Math.floor(time / STEP);          // study at the top
+  const phase = time - i * STEP;
+  const sweepAt = ZOOM + ARRIVE;
+  const flickAt = sweepAt + SWEEP + SHOW;
+  const dial = i + (phase > flickAt ? easeInOutBack((phase - flickAt) / FLICK) : 0);
+  const zoom = phase < ZOOM ? easeOutBack(phase / ZOOM) : 1; // the screen at the top growing to full size
+  const sweep = easeInOutSine(clamp01((phase - sweepAt) / SWEEP));
+  let handle = 0;                              // how visible the slider handle is
+  if (phase < ZOOM) handle = 0;
+  else if (phase < sweepAt) handle = (phase - ZOOM) / ARRIVE;
+  else if (phase < sweepAt + SWEEP) handle = 1;
+  else handle = 1 - clamp01((phase - sweepAt - SWEEP) / .25);
+  return { i, dial, zoom, sweep, handle };
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, r);
+}
+
+// Draw an image into a box: contain keeps all of it, cover fills the box
+function drawFit(img, x, y, w, h, fit) {
+  const ir = img.naturalWidth / img.naturalHeight;
+  let dw = w, dh = h;
+  if ((fit === 'cover') === (ir > w / h)) dw = h * ir; else dh = w / ir;
+  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+}
+
+// p: how much of the screen, from the left, already shows the redesign
+function drawScreen(it, cx, cy, angle, scale, p, handle, S) {
+  const w = it.w * S, h = it.h * S;
+  const x = -w / 2, y = -h / 2;
+  const r = 8 * S;
+  const well = it.well || '#fff';
+  const lineX = x + w * p;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  ctx.scale(scale, scale);
+
+  ctx.save();
+  ctx.shadowColor = 'rgba(0, 0, 0, .13)';
+  ctx.shadowBlur = 24 * S * scale;
+  ctx.shadowOffsetY = 10 * S * scale;
+  roundRect(x, y, w, h, r);
+  ctx.fillStyle = well;
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  roundRect(x, y, w, h, r);
+  ctx.clip();
+  if (p > 0) { // left of the handle: the redesign
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, lineX - x, h);
+    ctx.clip();
+    drawFit(it.afterImg, x, y, w, h, 'contain');
+    ctx.restore();
+  }
+  if (p < 1) { // right of it: the original
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(lineX, y, x + w - lineX, h);
+    ctx.clip();
+    ctx.fillStyle = well;
+    ctx.fillRect(x, y, w, h);
+    drawFit(it.beforeImg, x, y, w, h, it.fit);
+    ctx.restore();
+  }
+  ctx.restore();
+
+  roundRect(x + .5 * S, y + .5 * S, w - S, h - S, r);
+  ctx.strokeStyle = 'rgba(0, 0, 0, .06)';
+  ctx.lineWidth = S;
+  ctx.stroke();
+
+  // the compare slider's handle: a white line with a frosted grip, like the sliders on the page
+  if (handle > 0) {
+    ctx.globalAlpha = handle;
+    ctx.save();
+    roundRect(x, y, w, h, r);
+    ctx.clip();
+    ctx.shadowColor = 'rgba(0, 0, 0, .18)';
+    ctx.shadowBlur = 6 * S;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(lineX - S, y, 2 * S, h);
+    ctx.restore();
+    const gw = 22 * S, gh = 40 * S;
+    ctx.save();
+    ctx.shadowColor = 'rgba(0, 0, 0, .16)';
+    ctx.shadowBlur = 6 * S;
+    ctx.shadowOffsetY = 1 * S;
+    roundRect(lineX - gw / 2, -gh / 2, gw, gh, gw / 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.restore();
+    ctx.fillStyle = 'rgba(34, 34, 34, .65)';
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 2; col++) {
+        ctx.beginPath();
+        ctx.arc(lineX + (col ? 3 : -3) * S, (row - 1) * 6 * S, 1.3 * S, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+}
+
+function drawFrame(t, S) {
+  const W = FRAME_W * S, H = FRAME_H * S;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  const { i, dial, zoom, sweep, handle } = stateAt(t);
+  const n = ITEMS.length;
+  const step = STEP_DEG * Math.PI / 180;
+  const pivotX = W / 2, pivotY = (TOP_Y + RADIUS) * S;
+
+  const screens = ITEMS.map((it, k) => {
+    // steps from the top: +1 = next one in, on the left; -1 = the last one, on the right
+    let rel = k - dial;
+    rel = ((rel % n) + n + n / 2) % n - n / 2;
+    const angle = -rel * step;
+    const order = ((k - i) % n + n) % n; // 0 = at the top now, 1…3 still to come, 4…5 done
+    const p = order === 0 ? sweep : order <= n / 2 ? 0 : 1;
+    return { it, rel, angle, p, top: order === 0 };
+  }).filter((s) => Math.abs(s.rel) < 2.2);
+
+  // farthest first, so the one at the top is drawn over its neighbours
+  screens.sort((a, b) => Math.abs(b.rel) - Math.abs(a.rel));
+  for (const s of screens) {
+    const cx = pivotX + Math.sin(s.angle) * RADIUS * S;
+    const cy = pivotY - Math.cos(s.angle) * RADIUS * S;
+    // small on the sides, growing towards the top; the zoom takes the top one to full size
+    const near = 1 - Math.min(1, Math.abs(s.rel));
+    const base = SIDE_SCALE + (ARRIVE_SCALE - SIDE_SCALE) * near - (Math.abs(s.rel) > 1 ? (Math.abs(s.rel) - 1) * .12 : 0);
+    const scale = base + (1 - ARRIVE_SCALE) * near * (s.top ? zoom : 0);
+    drawScreen(s.it, cx, cy, s.angle, scale, s.p, s.top ? handle : 0, S);
+  }
+
+  // soft edges: screens rise out of white and sink back into it
+  const fadeB = 80 * S, fadeS = 56 * S;
+  const bottom = ctx.createLinearGradient(0, H, 0, H - fadeB);
+  bottom.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  bottom.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  ctx.fillStyle = bottom;
+  ctx.fillRect(0, H - fadeB, W, fadeB);
+  for (const [x0, x1] of [[0, fadeS], [W, W - fadeS]]) {
+    const g = ctx.createLinearGradient(x0, 0, x1, 0);
+    g.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    g.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(Math.min(x0, x1), 0, fadeS, H);
+  }
+}
+
+function setScale(S) {
+  canvas.width = FRAME_W * S;
+  canvas.height = FRAME_H * S;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+}
+
+/* ---------- MP4 (H.264) ---------- */
+function box(type, ...parts) {
+  const size = 8 + parts.reduce((n, p) => n + p.byteLength, 0);
+  const out = new Uint8Array(size);
+  new DataView(out.buffer).setUint32(0, size);
+  for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+  let at = 8;
+  for (const p of parts) { out.set(p, at); at += p.byteLength; }
+  return out;
+}
+function bytes(fields) { // [[bits, value], ...] big-endian
+  const size = fields.reduce((n, [b]) => n + b / 8, 0);
+  const out = new Uint8Array(size);
+  const dv = new DataView(out.buffer);
+  let at = 0;
+  for (const [b, v] of fields) {
+    if (b === 8) dv.setUint8(at, v);
+    else if (b === 16) dv.setUint16(at, v);
+    else if (b === 32) dv.setUint32(at, v);
+    at += b / 8;
+  }
+  return out;
+}
+const ascii = (s) => Uint8Array.from(s, (c) => c.charCodeAt(0));
+const zeros = (n) => new Uint8Array(n);
+const MATRIX = [0x00010000, 0, 0, 0, 0x00010000, 0, 0, 0, 0x40000000].map((v) => [32, v]);
+
+function muxMp4({ width, height, fps, samples, description }) {
+  const TIMESCALE = 60000;
+  const delta = TIMESCALE / fps;
+  const n = samples.length;
+  const durationMs = Math.round(n / fps * 1000);
+
+  const avcC = box('avcC', new Uint8Array(description));
+  const compressor = zeros(32);
+  const avc1 = box('avc1',
+    zeros(6), bytes([[16, 1], [16, 0], [16, 0], [32, 0], [32, 0], [32, 0], [16, width], [16, height],
+      [32, 0x00480000], [32, 0x00480000], [32, 0], [16, 1]]),
+    compressor, bytes([[16, 0x0018], [16, 0xFFFF]]), avcC);
+  const stsd = box('stsd', bytes([[32, 0], [32, 1]]), avc1);
+  const stts = box('stts', bytes([[32, 0], [32, 1], [32, n], [32, delta]]));
+  const keys = samples.map((s, i) => (s.key ? i + 1 : 0)).filter(Boolean);
+  const stss = box('stss', bytes([[32, 0], [32, keys.length], ...keys.map((k) => [32, k])]));
+  const stsc = box('stsc', bytes([[32, 0], [32, 1], [32, 1], [32, n], [32, 1]]));
+  const stsz = box('stsz', bytes([[32, 0], [32, 0], [32, n], ...samples.map((s) => [32, s.data.byteLength])]));
+  // chunk offset is patched once the size of everything before the samples is known
+  const stcoFor = (offset) => box('stco', bytes([[32, 0], [32, 1], [32, offset]]));
+
+  const build = (offset) => {
+    const stbl = box('stbl', stsd, stts, stss, stsc, stsz, stcoFor(offset));
+    const dinf = box('dinf', box('dref', bytes([[32, 0], [32, 1]]), box('url ', bytes([[32, 1]]))));
+    const vmhd = box('vmhd', bytes([[32, 1], [16, 0], [16, 0], [16, 0], [16, 0]]));
+    const minf = box('minf', vmhd, dinf, stbl);
+    const hdlr = box('hdlr', bytes([[32, 0], [32, 0]]), ascii('vide'), zeros(12), ascii('VideoHandler\0'));
+    const mdhd = box('mdhd', bytes([[32, 0], [32, 0], [32, 0], [32, TIMESCALE], [32, n * delta], [16, 0x55C4], [16, 0]]));
+    const mdia = box('mdia', mdhd, hdlr, minf);
+    const tkhd = box('tkhd', bytes([[32, 3], [32, 0], [32, 0], [32, 1], [32, 0], [32, durationMs], [32, 0], [32, 0],
+      [16, 0], [16, 0], [16, 0], [16, 0], ...MATRIX, [32, width * 65536], [32, height * 65536]]));
+    const trak = box('trak', tkhd, mdia);
+    const mvhd = box('mvhd', bytes([[32, 0], [32, 0], [32, 0], [32, 1000], [32, durationMs], [32, 0x00010000], [16, 0x0100], [16, 0],
+      [32, 0], [32, 0], ...MATRIX, [32, 0], [32, 0], [32, 0], [32, 0], [32, 0], [32, 0], [32, 2]]));
+    return box('moov', mvhd, trak);
+  };
+
+  const ftyp = box('ftyp', ascii('isom'), bytes([[32, 512]]), ascii('isomiso2avc1mp41'));
+  const moovSize = build(0).byteLength;
+  const moov = build(ftyp.byteLength + moovSize + 8); // samples start right after the mdat header
+  const mdatSize = 8 + samples.reduce((s, x) => s + x.data.byteLength, 0);
+  const out = new Uint8Array(ftyp.byteLength + moov.byteLength + mdatSize);
+  out.set(ftyp, 0);
+  out.set(moov, ftyp.byteLength);
+  let at = ftyp.byteLength + moov.byteLength;
+  new DataView(out.buffer).setUint32(at, mdatSize);
+  out.set(ascii('mdat'), at + 4);
+  at += 8;
+  for (const s of samples) { out.set(s.data, at); at += s.data.byteLength; }
+  return out;
+}
+
+function toBase64(u8) {
+  let s = '';
+  for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+
+// qp: constant quality (lower = sharper, bigger); otherwise a target bitrate
+async function encode({ scale, fps, bitrate, qp }) {
+  setScale(scale);
+  const width = canvas.width, height = canvas.height;
+  if (width % 2 || height % 2) throw new Error(`H.264 needs even sizes, got ${width}×${height}`);
+  const codecs = ['avc1.64002A', 'avc1.4D002A', 'avc1.42002A']; // High, Main, Baseline @ 4.2
+  let config = null;
+  for (const codec of codecs) {
+    const c = { codec, width, height, framerate: fps, avc: { format: 'avc' }, latencyMode: 'quality' };
+    if (qp) c.bitrateMode = 'quantizer'; else Object.assign(c, { bitrate, bitrateMode: 'variable' });
+    if ((await VideoEncoder.isConfigSupported(c)).supported) { config = c; break; }
+  }
+  if (!config) throw new Error('No H.264 encoder available in this browser');
+
+  const samples = [];
+  let description = null;
+  const encoder = new VideoEncoder({
+    output(chunk, meta) {
+      if (meta && meta.decoderConfig && meta.decoderConfig.description) description = meta.decoderConfig.description;
+      const data = new Uint8Array(chunk.byteLength);
+      chunk.copyTo(data);
+      samples.push({ data, key: chunk.type === 'key', ts: chunk.timestamp });
+    },
+    error(e) { throw e; },
+  });
+  encoder.configure(config);
+
+  const frames = Math.round(DURATION * fps);
+  for (let i = 0; i < frames; i++) {
+    drawFrame(i / fps, scale);
+    const frame = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
+    const options = { keyFrame: i % (fps * 2) === 0 };
+    if (qp) options.avc = { quantizer: qp };
+    encoder.encode(frame, options);
+    frame.close();
+    while (encoder.encodeQueueSize > 8) await new Promise((r) => setTimeout(r, 1));
+  }
+  await encoder.flush();
+  encoder.close();
+
+  const inOrder = samples.every((s, i) => i === 0 || s.ts > samples[i - 1].ts);
+  if (!inOrder) throw new Error('Encoder reordered frames (B-frames); this muxer expects none');
+  const mp4 = muxMp4({ width, height, fps, samples, description });
+  return { codec: config.codec, width, height, frames, bytes: mp4.byteLength, mp4: toBase64(mp4) };
+}
+
+function poster(scale) {
+  setScale(scale);
+  drawFrame(0, scale);
+  return canvas.toDataURL('image/webp', 0.9);
+}
+
+// one frame as a picture, for checking the motion without making the video
+function still(t, scale) {
+  setScale(scale);
+  drawFrame(t, scale);
+  return canvas.toDataURL('image/png');
+}
+
+window.teaser = { prepare, encode, poster, still, DURATION };
+
+// Live preview when opened directly (make-teaser.mjs opens it with ?render)
+if (!new URLSearchParams(location.search).has('render')) {
+  prepare().then(() => {
+    setScale(2);
+    const start = performance.now();
+    const tick = (now) => {
+      drawFrame(((now - start) / 1000) % DURATION, 2);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+</script>
+</body>
+</html>
