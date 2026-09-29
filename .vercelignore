@@ -1,0 +1,18 @@
+# Files the site never loads: kept in the repo, left out of the Vercel deploy.
+
+# Figma exports of the case study and the crowd animation's source pictures
+Assets/nook/design/
+Assets/footer/crowd-people/
+Assets/footer/crowd-lottie.tsx
+Assets/unused/
+
+# Full-size originals: the pages load the small copies in each sizes/ folder
+Assets/about/*.webp
+Assets/work/*.webp
+Assets/nook/*.webp
+Assets/nook/screens/*.webp
+Assets/icons/tools/*.webp
+
+# Notes and tools for editing, not for visitors
+/Assets/README.md
+/tools/
