@@ -250,8 +250,8 @@ button {
 /* content column edges: pink, like the band between them */
 .rx-edge { background: var(--pink); }
 .rx-edge b { color: var(--pink); font-weight: 600; }
-/* numbers between the band's edges */
-.rx-in b { color: var(--ink-2); }
+/* numbers between the band's edges: a touch darker than the rest, still quiet */
+.rx-in b { color: #7A7A7A; }
 .ry { position: absolute; left: 17px; width: 7px; height: var(--hair, 1px); background: var(--ruler-ink); }
 .ry b {
   position: absolute; right: 9px; top: 0;
