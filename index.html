@@ -296,7 +296,13 @@
           <div class="about-side reveal">
             <article class="note">
               <h3><img src="Assets/icons/currently-building.svg" alt="" width="24" height="24" loading="lazy">Currently Building</h3>
-              <p>A community app for the everyday problems of housing societies. Not another WhatsApp group. More soon.</p>
+              <!-- Tasker for Android: the button downloads the APK straight from this site -->
+              <div class="app-get">
+                <!-- width/height = the SVG's size; --tile-x/--tile-y = where its 44px tile starts inside it (it carries its own shadow) -->
+                <span class="app-icon"><img src="Assets/icons/tasker-app-icon.svg" alt="Tasker app icon" width="55" height="54" style="--tile-x:10px;--tile-y:8px" loading="lazy"></span>
+                <a class="btn btn-ghost app-btn" href="Assets/tasker/tasker.apk" download="Tasker.apk" type="application/vnd.android.package-archive">Download Tasker</a>
+              </div>
+              <p class="app-note">* Nothing collected. Everything stays on your phone.</p>
             </article>
             <article class="note">
               <h3><img src="Assets/icons/outside-of-design.svg" alt="" width="24" height="24" loading="lazy">Outside of Design</h3>
